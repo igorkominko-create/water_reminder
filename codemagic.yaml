@@ -23,7 +23,10 @@ workflows:
       # Team settings → Integrations → App Store Connect API key (name must match).
       app_store_connect: SnapBite
     environment:
-      # Optional: group "water_reminder_ios" with APP_STORE_APPLE_ID (numeric ASC Apple ID).
+      # Optional group "water_reminder_ios" (Application env vars, all Secret):
+      #   APP_STORE_APPLE_ID = numeric Apple ID from ASC → App Information
+      #   APP_STORE_CONNECT_ALTOOL_ADDITIONAL_ARGUMENTS = --apple-id "1234567890"
+      # (same number as APP_STORE_APPLE_ID; fixes altool error 19 for new apps)
       # groups:
       #   - water_reminder_ios
       # Main app bundle id only (string). Codemagic also matches extensions:

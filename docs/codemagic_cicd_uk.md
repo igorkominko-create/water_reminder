@@ -69,6 +69,29 @@ groups:
 - IPA завантажується в App Store Connect (`submit_to_testflight: false` — без авто beta review).
 - TestFlight / реліз — вручну в App Store Connect.
 
+#### Якщо «Publishing failed / Failed to publish … to App Store Connect»
+
+Збірка IPA **може бути успішною** — завантаж файл з **Artifacts** (`water_reminder.ipa`).
+
+1. **App Store Connect** → **My Apps** → є додаток **Water Reminder** з bundle `com.nexushealthlabs.waterreminder`.
+2. [developer.apple.com](https://developer.apple.com/account) → **Agreements** — прийми всі нові угоди (Paid Apps / Apple Developer).
+3. **Codemagic → Integrations** — API key **SnapBite** з роллю **App Manager**, той самий Team **49MKK942FB**.
+4. У логах білда розгорни крок **Publishing** — шукай код помилки:
+   - **19** / *Cannot determine the Apple ID from Bundle ID* → додай env (див. нижче).
+   - **-22020** / authentication → перевір API key, угоди, retry.
+5. **Обхід (найнадійніше для 1-го білда):** завантаж IPA вручну через [Transporter](https://apps.apple.com/app/transporter/id1450874784) (Mac) або **Apple Transporter** на Windows.
+
+**Env-група `water_reminder_ios` у Codemagic:**
+
+| Змінна | Значення |
+|--------|----------|
+| `APP_STORE_APPLE_ID` | Числовий Apple ID додатка (ASC → App Information) |
+| `APP_STORE_CONNECT_ALTOOL_ADDITIONAL_ARGUMENTS` | `--apple-id "ТОЙ_САМИЙ_НОМЕР"` |
+
+Розкоментуй у `codemagic.yaml`: `groups: [water_reminder_ios]`.
+
+Щоб CI був зеленим без auto-upload — тимчасово закоментуй блок `publishing:` у yaml; IPA лишиться в Artifacts.
+
 ---
 
 ## 3. Android — що завантажити / налаштувати
