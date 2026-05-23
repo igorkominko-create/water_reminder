@@ -82,7 +82,8 @@ flutter_native_splash:
 flutter:
   generate: true
   # Avoid SPM/CocoaPods conflict for google_mobile_ads + webview_flutter_wkwebview on iOS CI.
-  disable-swift-package-manager: true
+  config:
+    enable-swift-package-manager: false
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
