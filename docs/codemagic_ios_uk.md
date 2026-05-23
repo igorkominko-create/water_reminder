@@ -50,8 +50,8 @@ Mac **не потрібен**. Збірка йде на серверах Codemag
 
 ## 4. Android (без Mac)
 
-Workflow **Water Reminder Android (AAB)** — вручну в Codemagic.  
-Потрібен keystore `water_reminder_release` у Codemagic (або зміни ім’я в yaml).
+Workflow **Water Reminder Android (AAB + APK)** — автоматично на push у `main`.  
+Повна інструкція з секретами: **[codemagic_cicd_uk.md](codemagic_cicd_uk.md)**.
 
 ## Troubleshooting
 

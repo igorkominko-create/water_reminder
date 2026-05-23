@@ -1,16 +1,11 @@
-# Water Reminder — Codemagic (build on Mac cloud; no local Mac required)
+# Water Reminder — Codemagic CI/CD
 # https://codemagic.io/start/
 #
-# Prerequisites (Apple Developer — browser only):
-# 1) App Group: group.com.nexushealthlabs.waterreminder
-# 2) App IDs with App Groups enabled:
-#    - com.nexushealthlabs.waterreminder (main app)
-#    - com.nexushealthlabs.waterreminder.WaterWidget (widget extension)
-# 3) App Store Connect app record for com.nexushealthlabs.waterreminder
-# 4) Codemagic → Integrations → App Store Connect (same key as SnapBite: SnapBite)
-# 5) Codemagic → Code signing: fetch profiles for BOTH bundle IDs above
+# Workflows:
+#   ios-release     — IPA (Runner + WaterWidget), push to main
+#   android-release — AAB + APK, push to main
 #
-# Test widgets: install IPA via TestFlight on a real iPhone (iOS 16+).
+# Setup guide: docs/codemagic_cicd_uk.md
 
 workflows:
   ios-release:
@@ -25,8 +20,12 @@ workflows:
           include: true
           source: true
     integrations:
+      # Team settings → Integrations → App Store Connect API key (name must match).
       app_store_connect: SnapBite
     environment:
+      # Optional: group "water_reminder_ios" with APP_STORE_APPLE_ID (numeric ASC Apple ID).
+      # groups:
+      #   - water_reminder_ios
       ios_signing:
         distribution_type: app_store
         bundle_identifier:
@@ -45,6 +44,8 @@ workflows:
         script: xcode-project use-profiles
       - name: Flutter pub get
         script: flutter pub get
+      - name: Generate localizations
+        script: flutter gen-l10n
       - name: CocoaPods
         script: |
           cd ios
@@ -55,7 +56,12 @@ workflows:
           VERSION_LINE=$(grep '^version:' pubspec.yaml | sed 's/version: //' | tr -d ' ')
           BUILD_NAME=$(echo "$VERSION_LINE" | cut -d'+' -f1)
           PUB_NUMBER=$(echo "$VERSION_LINE" | cut -d'+' -f2)
-          BUILD_NUMBER="$PUB_NUMBER"
+          if [ -n "${APP_STORE_APPLE_ID:-}" ]; then
+            LATEST=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID" || echo 0)
+            BUILD_NUMBER=$((LATEST + 1))
+          else
+            BUILD_NUMBER="$PUB_NUMBER"
+          fi
           echo "Building IPA $BUILD_NAME ($BUILD_NUMBER) with WaterWidgetExtension"
           flutter build ipa --release \
             --build-name="$BUILD_NAME" \
@@ -67,15 +73,31 @@ workflows:
     publishing:
       app_store_connect:
         auth: integration
+        # Upload only; submit for review in App Store Connect manually.
         submit_to_testflight: false
 
   android-release:
-    name: Water Reminder Android (AAB)
+    name: Water Reminder Android (AAB + APK)
     instance_type: mac_mini_m2
     max_build_duration: 90
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+          source: true
     environment:
+      # Option A (recommended): upload keystore in Codemagic UI → Code signing → Android
+      # Reference name must match:
       android_signing:
         - water_reminder_release
+      # Option B: environment variable group "water_reminder_android" (see docs).
+      # groups:
+      #   - water_reminder_android
+      # Optional Play upload after first manual release:
+      # groups:
+      #   - google_play_credentials
       vars:
         PACKAGE_NAME: com.ihorkominko.waterreminder
         GOOGLE_PLAY_TRACK: internal
@@ -84,12 +106,50 @@ workflows:
     scripts:
       - name: Flutter pub get
         script: flutter pub get
+      - name: Generate localizations
+        script: flutter gen-l10n
+      - name: Set up Android signing (env vars fallback)
+        script: |
+          # Codemagic sets CM_* automatically when android_signing is configured.
+          # If you use only the env group (no UI keystore), decode CM_KEYSTORE here:
+          if [ -n "${CM_KEYSTORE:-}" ] && [ -z "${CM_KEYSTORE_PATH:-}" ]; then
+            echo "$CM_KEYSTORE" | base64 --decode > /tmp/keystore.jks
+            export CM_KEYSTORE_PATH=/tmp/keystore.jks
+          fi
+          if [ -n "${CM_KEYSTORE_PATH:-}" ]; then
+            echo "Release signing: $CM_KEYSTORE_PATH (alias ${CM_KEY_ALIAS:-?})"
+          else
+            echo "WARNING: No CM_KEYSTORE_PATH — release will use debug signing"
+          fi
       - name: Flutter build AAB
         script: |
           set -e
           VERSION_LINE=$(grep '^version:' pubspec.yaml | sed 's/version: //' | tr -d ' ')
           BUILD_NAME=$(echo "$VERSION_LINE" | cut -d'+' -f1)
           PUB_NUMBER=$(echo "$VERSION_LINE" | cut -d'+' -f2)
+          BUILD_NUMBER="$PUB_NUMBER"
+          if [ -n "${GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS:-}" ]; then
+            LATEST=$(google-play get-latest-build-number --package-name "$PACKAGE_NAME" --tracks="$GOOGLE_PLAY_TRACK" || echo 0)
+            BUILD_NUMBER=$((LATEST + 1))
+          fi
+          echo "Building AAB $BUILD_NAME ($BUILD_NUMBER)"
           flutter build appbundle --release \
             --build-name="$BUILD_NAME" \
+            --build-number="$BUILD_NUMBER"
+      - name: Flutter build APK
+        script: |
+          set -e
+          VERSION_LINE=$(grep '^version:' pubspec.yaml | sed 's/version: //' | tr -d ' ')
+          BUILD_NAME=$(echo "$VERSION_LINE" | cut -d'+' -f1)
+          PUB_NUMBER=$(echo "$VERSION_LINE" | cut -d'+' -f2)
+          flutter build apk --release \
+            --build-name="$BUILD_NAME" \
             --build-number="$PUB_NUMBER"
+    artifacts:
+      - build/**/outputs/**/*.aab
+      - build/**/outputs/**/*.apk
+    # publishing:
+      # google_play:
+      #   credentials: $GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS
+      #   track: $GOOGLE_PLAY_TRACK
+      #   submit_as_draft: true
