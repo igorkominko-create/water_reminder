@@ -73,11 +73,13 @@ workflows:
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
-    publishing:
-      app_store_connect:
-        auth: integration
-        # Upload only; submit for review in App Store Connect manually.
-        submit_to_testflight: false
+    # Auto-upload to App Store Connect often fails for new apps (auth / Apple ID).
+    # Download IPA from Artifacts and upload with Transporter (see docs/codemagic_cicd_uk.md).
+    # When ASC + API key are ready, uncomment publishing and add group water_reminder_ios.
+    # publishing:
+    #   app_store_connect:
+    #     auth: integration
+    #     submit_to_testflight: false
 
   android-release:
     name: Water Reminder Android (AAB + APK)
