@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/i18n/app_locale.dart';
+import '../../../../core/i18n/app_strings.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../domain/entities/hydration_snapshot.dart';
 
@@ -12,11 +14,14 @@ class HydrationSummaryHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.waterColors;
-    final dateLabel = DateFormat('EEEE, d MMMM').format(DateTime.now());
+    final dateLabel = DateFormat(
+      'EEEE, d MMMM',
+      AppLocale.english.toString(),
+    ).format(DateTime.now());
 
     final headline = snapshot.goalReached
-        ? 'You’re fully hydrated'
-        : '${snapshot.remainingMl} ml to go';
+        ? AppStrings.goalReachedHeadline
+        : AppStrings.mlToGo(snapshot.remainingMl);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

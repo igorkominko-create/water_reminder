@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../../../../core/i18n/app_strings.dart';
 import '../../../../core/theme/app_theme.dart';
 
 class WaterProgressRing extends StatelessWidget {
@@ -55,14 +56,14 @@ class WaterProgressRing extends StatelessWidget {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    '$todayMl ml',
+                    AppStrings.mlWithUnit(todayMl),
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: colors.mid,
                           fontWeight: FontWeight.w600,
                         ),
                   ),
                   Text(
-                    'of $goalMl ml',
+                    AppStrings.ofDailyGoal(goalMl),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: colors.deep.withValues(alpha: 0.55),
                         ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../core/constants/app_constants.dart';
+
+import '../core/i18n/app_locale.dart';
+import '../core/i18n/app_strings.dart';
 import '../core/theme/app_theme.dart';
 import '../features/home/presentation/home_screen.dart';
 
@@ -9,8 +11,11 @@ class WaterApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: AppConstants.appName,
+      title: AppStrings.appName,
       debugShowCheckedModeBanner: false,
+      locale: AppLocale.english,
+      supportedLocales: AppLocale.supportedLocales,
+      localizationsDelegates: AppLocale.delegates,
       theme: AppTheme.light(),
       home: const HomeScreen(),
     );

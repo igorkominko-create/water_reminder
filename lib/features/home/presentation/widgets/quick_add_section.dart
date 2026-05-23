@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/i18n/app_strings.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/glass_surface.dart';
 
@@ -19,7 +20,7 @@ class QuickAddSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'Add water',
+            AppStrings.addWater,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w600,
                   color: colors.deep,
@@ -77,14 +78,14 @@ class _AddTile extends StatelessWidget {
               Icon(icon, color: colors.mid, size: 22),
               const SizedBox(height: 6),
               Text(
-                '$ml',
+                AppStrings.mlAmount(ml),
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w700,
                       color: colors.deep,
                     ),
               ),
               Text(
-                'ml',
+                AppStrings.mlLabel,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: colors.deep.withValues(alpha: 0.5),
                     ),

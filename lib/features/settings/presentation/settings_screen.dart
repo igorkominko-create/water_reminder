@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/di/providers.dart';
+import '../../../core/i18n/app_strings.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -31,10 +32,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     final async = ref.watch(hydrationNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(title: const Text(AppStrings.settings)),
       body: async.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Error: $e')),
+        error: (e, _) => Center(child: Text(AppStrings.errorMessage(e))),
         data: (snapshot) {
           if (!_goalFieldInitialized) {
             _goalController.text = '${snapshot.goalMl}';
@@ -44,7 +45,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             padding: const EdgeInsets.all(24),
             children: [
               Text(
-                'Daily goal (ml)',
+                AppStrings.dailyGoalTitle,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 8),
@@ -53,7 +54,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: '2000',
+                  hintText: AppStrings.dailyGoalHint,
                 ),
               ),
               const SizedBox(height: 12),
@@ -63,7 +64,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   if (parsed == null || parsed < 250 || parsed > 10000) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('Enter a goal between 250 and 10000 ml'),
+                        content: Text(AppStrings.invalidGoalMessage),
                       ),
                     );
                     return;
@@ -71,7 +72,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   ref.read(hydrationNotifierProvider.notifier).setGoal(parsed);
                   Navigator.of(context).pop();
                 },
-                child: const Text('Save goal'),
+                child: const Text(AppStrings.saveGoal),
               ),
               const SizedBox(height: 32),
               OutlinedButton(
@@ -79,18 +80,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   final ok = await showDialog<bool>(
                     context: context,
                     builder: (ctx) => AlertDialog(
-                      title: const Text('Reset today?'),
-                      content: const Text(
-                        'Clears today’s intake. Widgets will update too.',
-                      ),
+                      title: const Text(AppStrings.resetTodayTitle),
+                      content: const Text(AppStrings.resetTodayMessage),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.pop(ctx, false),
-                          child: const Text('Cancel'),
+                          child: const Text(AppStrings.cancel),
                         ),
                         FilledButton(
                           onPressed: () => Navigator.pop(ctx, true),
-                          child: const Text('Reset'),
+                          child: const Text(AppStrings.reset),
                         ),
                       ],
                     ),
@@ -102,7 +101,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     if (context.mounted) Navigator.of(context).pop();
                   }
                 },
-                child: const Text('Reset today'),
+                child: const Text(AppStrings.resetToday),
               ),
             ],
           );

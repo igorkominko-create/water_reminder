@@ -19,7 +19,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Water'), findsOneWidget);
+    expect(find.text('Water Reminder'), findsWidgets);
     expect(find.text('2000 ml to go'), findsOneWidget);
   });
 }

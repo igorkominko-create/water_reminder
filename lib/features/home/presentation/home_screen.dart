@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/di/providers.dart';
+import '../../../core/i18n/app_strings.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/glass_surface.dart';
 import '../../../core/widgets/gradient_scaffold.dart';
@@ -21,10 +22,10 @@ class HomeScreen extends ConsumerWidget {
     return GradientScaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('Water'),
+        title: const Text(AppStrings.homeTitle),
         actions: [
           IconButton(
-            tooltip: 'Settings',
+            tooltip: AppStrings.settingsTooltip,
             icon: const Icon(Icons.more_horiz_rounded),
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute<void>(
@@ -36,7 +37,7 @@ class HomeScreen extends ConsumerWidget {
       ),
       body: async.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Error: $e')),
+        error: (e, _) => Center(child: Text(AppStrings.errorMessage(e))),
         data: (snapshot) {
           return SafeArea(
             top: false,
@@ -97,7 +98,7 @@ class _WidgetHint extends StatelessWidget {
           const SizedBox(width: 14),
           Expanded(
             child: Text(
-              'Pin a widget on your Home or Lock Screen — it updates when you log water here.',
+              AppStrings.widgetHint,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: colors.deep.withValues(alpha: 0.75),
                     height: 1.35,
