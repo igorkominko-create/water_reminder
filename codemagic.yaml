@@ -49,7 +49,7 @@ workflows:
       - name: CocoaPods
         script: |
           cd ios
-          pod install
+          pod install --repo-update
       - name: Flutter build IPA
         script: |
           set -e
