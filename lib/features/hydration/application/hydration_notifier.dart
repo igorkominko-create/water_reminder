@@ -18,9 +18,16 @@ class HydrationNotifier extends AsyncNotifier<HydrationSnapshot> {
   Future<void> addWater(int ml) async {
     final repo = await ref.read(hydrationRepositoryProvider.future);
     final widgets = ref.read(widgetSyncRepositoryProvider);
+    final previous = state.valueOrNull;
     final next = await repo.addWater(ml);
     state = AsyncData(next);
     await widgets.sync(next);
+
+    final crossedGoal =
+        previous != null && !previous.goalReached && next.goalReached;
+    if (crossedGoal) {
+      await ref.read(admobServiceProvider).onGoalReached(next.todayKey);
+    }
   }
 
   Future<void> setGoal(int goalMl) async {

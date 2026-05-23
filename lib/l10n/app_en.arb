@@ -1,0 +1,72 @@
+{
+  "@@locale": "en",
+  "appName": "Water Reminder",
+  "@appName": {
+    "description": "Application display name"
+  },
+  "homeTitle": "Water Reminder",
+  "settings": "Settings",
+  "settingsTooltip": "Settings",
+  "mlToGo": "{ml} ml to go",
+  "@mlToGo": {
+    "placeholders": {
+      "ml": {
+        "type": "int"
+      }
+    }
+  },
+  "goalReachedHeadline": "Daily goal complete",
+  "addWater": "Add water",
+  "customAmountHint": "Custom amount (ml)",
+  "addCustom": "Add",
+  "invalidAmountMessage": "Enter an amount between {min} and {max} ml",
+  "@invalidAmountMessage": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "mlWithUnit": "{ml} ml",
+  "@mlWithUnit": {
+    "placeholders": {
+      "ml": {
+        "type": "int"
+      }
+    }
+  },
+  "mlLabel": "ml",
+  "ofDailyGoal": "of {goalMl} ml",
+  "@ofDailyGoal": {
+    "placeholders": {
+      "goalMl": {
+        "type": "int"
+      }
+    }
+  },
+  "widgetHint": "Add a widget on your Home or Lock Screen — it updates when you log water here.",
+  "dailyGoalTitle": "Daily goal (ml)",
+  "dailyGoalHint": "2000",
+  "saveGoal": "Save goal",
+  "invalidGoalMessage": "Enter a goal between 250 and 10000 ml",
+  "resetTodayTitle": "Reset today?",
+  "resetTodayMessage": "Clears today's intake. Widgets will update too.",
+  "cancel": "Cancel",
+  "reset": "Reset",
+  "resetToday": "Reset today",
+  "errorMessage": "Error: {error}",
+  "@errorMessage": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "trackingUsageDescription": "This allows us to show ads that are more relevant to you and support the free app.",
+  "@trackingUsageDescription": {
+    "description": "iOS App Tracking Transparency prompt (also in InfoPlist.strings)"
+  }
+}

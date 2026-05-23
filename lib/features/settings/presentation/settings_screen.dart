@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/di/providers.dart';
-import '../../../core/i18n/app_strings.dart';
+import '../../../l10n/app_localizations.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -29,13 +29,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final async = ref.watch(hydrationNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text(AppStrings.settings)),
+      appBar: AppBar(title: Text(l10n.settings)),
       body: async.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text(AppStrings.errorMessage(e))),
+        error: (e, _) => Center(child: Text(l10n.errorMessage('$e'))),
         data: (snapshot) {
           if (!_goalFieldInitialized) {
             _goalController.text = '${snapshot.goalMl}';
@@ -45,16 +46,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             padding: const EdgeInsets.all(24),
             children: [
               Text(
-                AppStrings.dailyGoalTitle,
+                l10n.dailyGoalTitle,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 8),
               TextField(
                 controller: _goalController,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: AppStrings.dailyGoalHint,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: l10n.dailyGoalHint,
                 ),
               ),
               const SizedBox(height: 12),
@@ -63,36 +64,37 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   final parsed = int.tryParse(_goalController.text.trim());
                   if (parsed == null || parsed < 250 || parsed > 10000) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(AppStrings.invalidGoalMessage),
-                      ),
+                      SnackBar(content: Text(l10n.invalidGoalMessage)),
                     );
                     return;
                   }
                   ref.read(hydrationNotifierProvider.notifier).setGoal(parsed);
                   Navigator.of(context).pop();
                 },
-                child: const Text(AppStrings.saveGoal),
+                child: Text(l10n.saveGoal),
               ),
               const SizedBox(height: 32),
               OutlinedButton(
                 onPressed: () async {
                   final ok = await showDialog<bool>(
                     context: context,
-                    builder: (ctx) => AlertDialog(
-                      title: const Text(AppStrings.resetTodayTitle),
-                      content: const Text(AppStrings.resetTodayMessage),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(ctx, false),
-                          child: const Text(AppStrings.cancel),
-                        ),
-                        FilledButton(
-                          onPressed: () => Navigator.pop(ctx, true),
-                          child: const Text(AppStrings.reset),
-                        ),
-                      ],
-                    ),
+                    builder: (ctx) {
+                      final dialogL10n = AppLocalizations.of(ctx);
+                      return AlertDialog(
+                        title: Text(dialogL10n.resetTodayTitle),
+                        content: Text(dialogL10n.resetTodayMessage),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(ctx, false),
+                            child: Text(dialogL10n.cancel),
+                          ),
+                          FilledButton(
+                            onPressed: () => Navigator.pop(ctx, true),
+                            child: Text(dialogL10n.reset),
+                          ),
+                        ],
+                      );
+                    },
                   );
                   if (ok == true && context.mounted) {
                     await ref
@@ -101,7 +103,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     if (context.mounted) Navigator.of(context).pop();
                   }
                 },
-                child: const Text(AppStrings.resetToday),
+                child: Text(l10n.resetToday),
               ),
             ],
           );

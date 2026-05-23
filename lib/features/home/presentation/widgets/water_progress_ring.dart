@@ -2,8 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../../../core/i18n/app_strings.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class WaterProgressRing extends StatelessWidget {
   const WaterProgressRing({
@@ -21,6 +21,7 @@ class WaterProgressRing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final colors = context.waterColors;
 
     return TweenAnimationBuilder<double>(
@@ -49,24 +50,24 @@ class WaterProgressRing extends StatelessWidget {
                   Text(
                     '$percent%',
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: colors.deep,
-                          letterSpacing: -1.5,
-                        ),
+                      fontWeight: FontWeight.w700,
+                      color: colors.deep,
+                      letterSpacing: -1.5,
+                    ),
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    AppStrings.mlWithUnit(todayMl),
+                    l10n.mlWithUnit(todayMl),
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: colors.mid,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      color: colors.mid,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   Text(
-                    AppStrings.ofDailyGoal(goalMl),
+                    l10n.ofDailyGoal(goalMl),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: colors.deep.withValues(alpha: 0.55),
-                        ),
+                      color: colors.deep.withValues(alpha: 0.55),
+                    ),
                   ),
                 ],
               ),

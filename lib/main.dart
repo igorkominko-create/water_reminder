@@ -19,9 +19,6 @@ Future<void> main() async {
   await container.read(widgetSyncRepositoryProvider).initialize();
 
   runApp(
-    UncontrolledProviderScope(
-      container: container,
-      child: const WaterApp(),
-    ),
+    UncontrolledProviderScope(container: container, child: const WaterApp()),
   );
 }

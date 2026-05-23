@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/di/providers.dart';
-import '../../../core/i18n/app_strings.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/glass_surface.dart';
 import '../../../core/widgets/gradient_scaffold.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../ads/presentation/home_bottom_banner_ad.dart';
 import '../../settings/presentation/settings_screen.dart';
 import 'widgets/hydration_summary_header.dart';
 import 'widgets/quick_add_section.dart';
@@ -16,59 +17,66 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final async = ref.watch(hydrationNotifierProvider);
     final topPadding = MediaQuery.paddingOf(context).top;
 
-    return GradientScaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: const Text(AppStrings.homeTitle),
-        actions: [
-          IconButton(
-            tooltip: AppStrings.settingsTooltip,
-            icon: const Icon(Icons.more_horiz_rounded),
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (_) => const SettingsScreen(),
+    return AdMobInitializer(
+      child: GradientScaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          title: Text(l10n.homeTitle),
+          actions: [
+            IconButton(
+              tooltip: l10n.settingsTooltip,
+              icon: const Icon(Icons.more_horiz_rounded),
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const SettingsScreen()),
               ),
             ),
-          ),
-        ],
-      ),
-      body: async.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text(AppStrings.errorMessage(e))),
-        data: (snapshot) {
-          return SafeArea(
-            top: false,
-            child: SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(24, topPadding + kToolbarHeight + 8, 24, 32),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  HydrationSummaryHeader(snapshot: snapshot),
-                  const SizedBox(height: 32),
-                  Center(
-                    child: WaterProgressRing(
-                      progress: snapshot.progress,
-                      todayMl: snapshot.todayMl,
-                      goalMl: snapshot.goalMl,
-                      percent: snapshot.percent,
+          ],
+        ),
+        bottomNavigationBar: const HomeBottomBannerAd(),
+        body: async.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (e, _) => Center(child: Text(l10n.errorMessage('$e'))),
+          data: (snapshot) {
+            return SafeArea(
+              top: false,
+              child: SingleChildScrollView(
+                padding: EdgeInsets.fromLTRB(
+                  24,
+                  topPadding + kToolbarHeight + 8,
+                  24,
+                  24,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    HydrationSummaryHeader(snapshot: snapshot),
+                    const SizedBox(height: 32),
+                    Center(
+                      child: WaterProgressRing(
+                        progress: snapshot.progress,
+                        todayMl: snapshot.todayMl,
+                        goalMl: snapshot.goalMl,
+                        percent: snapshot.percent,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 36),
-                  QuickAddSection(
-                    onAdd: (ml) => ref
-                        .read(hydrationNotifierProvider.notifier)
-                        .addWater(ml),
-                  ),
-                  const SizedBox(height: 20),
-                  _WidgetHint(colors: context.waterColors),
-                ],
+                    const SizedBox(height: 36),
+                    QuickAddSection(
+                      onAdd: (ml) => ref
+                          .read(hydrationNotifierProvider.notifier)
+                          .addWater(ml),
+                    ),
+                    const SizedBox(height: 20),
+                    _WidgetHint(colors: context.waterColors),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -81,6 +89,8 @@ class _WidgetHint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return GlassSurface(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       child: Row(
@@ -98,11 +108,11 @@ class _WidgetHint extends StatelessWidget {
           const SizedBox(width: 14),
           Expanded(
             child: Text(
-              AppStrings.widgetHint,
+              l10n.widgetHint,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: colors.deep.withValues(alpha: 0.75),
-                    height: 1.35,
-                  ),
+                color: colors.deep.withValues(alpha: 0.75),
+                height: 1.35,
+              ),
             ),
           ),
         ],
