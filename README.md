@@ -17,6 +17,26 @@ Minimal Flutter hydration tracker with a focus on **iOS Lock Screen / Home Scree
 
 Register new App ID / Play app with these IDs before store release.
 
+## GitHub
+
+Remote (after you create the empty repo on GitHub):
+
+```text
+https://github.com/igorkominko-create/water_reminder.git
+```
+
+1. Open [github.com/new](https://github.com/new)
+2. Repository name: **water_reminder**
+3. **Private** (recommended), **do not** add README / .gitignore (already in project)
+4. Create repository, then:
+
+```bash
+cd water_reminder
+git push -u origin main
+```
+
+Initial commit on `main`: `8d79111`.
+
 ## Run locally
 
 ```bash
