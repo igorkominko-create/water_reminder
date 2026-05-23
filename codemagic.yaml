@@ -1,0 +1,95 @@
+# Water Reminder — Codemagic (build on Mac cloud; no local Mac required)
+# https://codemagic.io/start/
+#
+# Prerequisites (Apple Developer — browser only):
+# 1) App Group: group.com.nexushealthlabs.waterreminder
+# 2) App IDs with App Groups enabled:
+#    - com.nexushealthlabs.waterreminder (main app)
+#    - com.nexushealthlabs.waterreminder.WaterWidget (widget extension)
+# 3) App Store Connect app record for com.nexushealthlabs.waterreminder
+# 4) Codemagic → Integrations → App Store Connect (same key as SnapBite: SnapBite)
+# 5) Codemagic → Code signing: fetch profiles for BOTH bundle IDs above
+#
+# Test widgets: install IPA via TestFlight on a real iPhone (iOS 16+).
+
+workflows:
+  ios-release:
+    name: Water Reminder iOS (IPA + widgets)
+    instance_type: mac_mini_m2
+    max_build_duration: 120
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+          source: true
+    integrations:
+      app_store_connect: SnapBite
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier:
+          - com.nexushealthlabs.waterreminder
+          - com.nexushealthlabs.waterreminder.WaterWidget
+      vars:
+        XCODE_WORKSPACE: ios/Runner.xcworkspace
+        XCODE_SCHEME: Runner
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Patch Xcode project (widget extension)
+        script: python3 tool/patch_ios_widget_target.py
+      - name: Apply provisioning profiles
+        script: xcode-project use-profiles
+      - name: Flutter pub get
+        script: flutter pub get
+      - name: CocoaPods
+        script: |
+          cd ios
+          pod install
+      - name: Flutter build IPA
+        script: |
+          set -e
+          VERSION_LINE=$(grep '^version:' pubspec.yaml | sed 's/version: //' | tr -d ' ')
+          BUILD_NAME=$(echo "$VERSION_LINE" | cut -d'+' -f1)
+          PUB_NUMBER=$(echo "$VERSION_LINE" | cut -d'+' -f2)
+          BUILD_NUMBER="$PUB_NUMBER"
+          echo "Building IPA $BUILD_NAME ($BUILD_NUMBER) with WaterWidgetExtension"
+          flutter build ipa --release \
+            --build-name="$BUILD_NAME" \
+            --build-number="$BUILD_NUMBER" \
+            --export-options-plist=/Users/builder/export_options.plist
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: false
+
+  android-release:
+    name: Water Reminder Android (AAB)
+    instance_type: mac_mini_m2
+    max_build_duration: 90
+    environment:
+      android_signing:
+        - water_reminder_release
+      vars:
+        PACKAGE_NAME: com.ihorkominko.waterreminder
+        GOOGLE_PLAY_TRACK: internal
+      flutter: stable
+      java: 17
+    scripts:
+      - name: Flutter pub get
+        script: flutter pub get
+      - name: Flutter build AAB
+        script: |
+          set -e
+          VERSION_LINE=$(grep '^version:' pubspec.yaml | sed 's/version: //' | tr -d ' ')
+          BUILD_NAME=$(echo "$VERSION_LINE" | cut -d'+' -f1)
+          PUB_NUMBER=$(echo "$VERSION_LINE" | cut -d'+' -f2)
+          flutter build appbundle --release \
+            --build-name="$BUILD_NAME" \
+            --build-number="$PUB_NUMBER"

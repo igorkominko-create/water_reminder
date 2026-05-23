@@ -11,11 +11,8 @@ abstract final class AppConstants {
   static const String prefTodayDate = 'today_date';
   static const String prefTodayMl = 'today_ml';
 
-  /// [home_widget] keys synced to native widgets.
-  static const String widgetGoalMl = 'goal_ml';
-  static const String widgetTodayMl = 'today_ml';
-  static const String widgetProgress = 'progress';
   static const String widgetGroupId = 'group.com.nexushealthlabs.waterreminder';
+  static const String widgetDeepLinkScheme = 'waterreminder';
   static const String androidWidgetName = 'WaterWidgetProvider';
   static const String iosWidgetName = 'WaterWidget';
 }

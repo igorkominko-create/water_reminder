@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app/water_app.dart';
+import 'core/di/providers.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,5 +11,15 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(const ProviderScope(child: WaterApp()));
+
+  // App Group must be set before any widget read/write (iOS).
+  final container = ProviderContainer();
+  await container.read(widgetSyncRepositoryProvider).initialize();
+
+  runApp(
+    UncontrolledProviderScope(
+      container: container,
+      child: const WaterApp(),
+    ),
+  );
 }

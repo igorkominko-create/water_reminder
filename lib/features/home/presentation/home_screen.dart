@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/di/providers.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../hydration/application/hydration_controller.dart';
+import '../../../core/widgets/glass_surface.dart';
+import '../../../core/widgets/gradient_scaffold.dart';
 import '../../settings/presentation/settings_screen.dart';
-import 'widgets/quick_add_buttons.dart';
+import 'widgets/hydration_summary_header.dart';
+import 'widgets/quick_add_section.dart';
 import 'widgets/water_progress_ring.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -12,15 +15,17 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final async = ref.watch(hydrationControllerProvider);
-    final colors = context.waterColors;
+    final async = ref.watch(hydrationNotifierProvider);
+    final topPadding = MediaQuery.paddingOf(context).top;
 
-    return Scaffold(
+    return GradientScaffold(
       appBar: AppBar(
-        title: const Text('Water Reminder'),
+        backgroundColor: Colors.transparent,
+        title: const Text('Water'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.tune_rounded),
+            tooltip: 'Settings',
+            icon: const Icon(Icons.more_horiz_rounded),
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute<void>(
                 builder: (_) => const SettingsScreen(),
@@ -32,59 +37,74 @@ class HomeScreen extends ConsumerWidget {
       body: async.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('Error: $e')),
-        data: (state) {
-          final subtitle = state.goalReached
-              ? 'Goal reached — great hydration!'
-              : '${state.remainingMl} ml left today';
-
+        data: (snapshot) {
           return SafeArea(
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
-              children: [
-                Text(
-                  subtitle,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: colors.mid,
-                      ),
-                ),
-                const SizedBox(height: 28),
-                Center(
-                  child: WaterProgressRing(
-                    progress: state.progress,
-                    todayMl: state.todayMl,
-                    goalMl: state.goalMl,
-                  ),
-                ),
-                const SizedBox(height: 36),
-                QuickAddButtons(
-                  onAdd: (ml) => ref
-                      .read(hydrationControllerProvider.notifier)
-                      .addWater(ml),
-                ),
-                const SizedBox(height: 28),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Row(
-                      children: [
-                        Icon(Icons.widgets_outlined, color: colors.mid),
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: Text(
-                            'Add the Water widget from your home or lock screen '
-                            'to track progress at a glance.',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ),
-                      ],
+            top: false,
+            child: SingleChildScrollView(
+              padding: EdgeInsets.fromLTRB(24, topPadding + kToolbarHeight + 8, 24, 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  HydrationSummaryHeader(snapshot: snapshot),
+                  const SizedBox(height: 32),
+                  Center(
+                    child: WaterProgressRing(
+                      progress: snapshot.progress,
+                      todayMl: snapshot.todayMl,
+                      goalMl: snapshot.goalMl,
+                      percent: snapshot.percent,
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 36),
+                  QuickAddSection(
+                    onAdd: (ml) => ref
+                        .read(hydrationNotifierProvider.notifier)
+                        .addWater(ml),
+                  ),
+                  const SizedBox(height: 20),
+                  _WidgetHint(colors: context.waterColors),
+                ],
+              ),
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _WidgetHint extends StatelessWidget {
+  const _WidgetHint({required this.colors});
+
+  final WaterColors colors;
+
+  @override
+  Widget build(BuildContext context) {
+    return GlassSurface(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      child: Row(
+        children: [
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: colors.foam,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Icon(Icons.widgets_rounded, color: colors.mid, size: 22),
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Text(
+              'Pin a widget on your Home or Lock Screen — it updates when you log water here.',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: colors.deep.withValues(alpha: 0.75),
+                    height: 1.35,
+                  ),
+            ),
+          ),
+        ],
       ),
     );
   }

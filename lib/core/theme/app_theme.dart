@@ -58,6 +58,7 @@ abstract final class AppTheme {
           mid: _mid,
           light: _light,
           foam: _foam,
+          surface: _surface,
         ),
       ],
     );
@@ -70,12 +71,14 @@ class WaterColors extends ThemeExtension<WaterColors> {
     required this.mid,
     required this.light,
     required this.foam,
+    required this.surface,
   });
 
   final Color deep;
   final Color mid;
   final Color light;
   final Color foam;
+  final Color surface;
 
   @override
   WaterColors copyWith({
@@ -83,12 +86,14 @@ class WaterColors extends ThemeExtension<WaterColors> {
     Color? mid,
     Color? light,
     Color? foam,
+    Color? surface,
   }) {
     return WaterColors(
       deep: deep ?? this.deep,
       mid: mid ?? this.mid,
       light: light ?? this.light,
       foam: foam ?? this.foam,
+      surface: surface ?? this.surface,
     );
   }
 
@@ -100,6 +105,7 @@ class WaterColors extends ThemeExtension<WaterColors> {
       mid: Color.lerp(mid, other.mid, t)!,
       light: Color.lerp(light, other.light, t)!,
       foam: Color.lerp(foam, other.foam, t)!,
+      surface: Color.lerp(surface, other.surface, t)!,
     );
   }
 }

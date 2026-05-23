@@ -1,34 +1,39 @@
-# Home & Lock Screen widgets
+# Native widgets (iOS & Android)
 
-Flutter writes widget data via [`home_widget`](https://pub.dev/packages/home_widget). Keys:
+Flutter never draws Lock Screen / Home Screen UI directly. We sync a **shared data contract** from Dart, then native code renders widgets.
 
-| Key | Type | Description |
-|-----|------|-------------|
-| `goal_ml` | int | Daily goal |
-| `today_ml` | int | Intake today |
-| `progress` | double | 0.0–1.0 |
+## Contract (`WidgetDataKeys`)
+
+| Key | Type | Example |
+|-----|------|---------|
+| `goal_ml` | int | 2000 |
+| `today_ml` | int | 750 |
+| `progress` | double | 0.375 |
+| `percent` | int | 38 |
+| `remaining_ml` | int | 1250 |
+| `goal_reached` | bool | false |
+| `updated_at` | String (ISO8601) | audit / debug |
+
+**Writer:** `HomeWidgetSyncRepository` (Dart)  
+**Readers:** `WaterWidgetProvider` (Android), SwiftUI Widget Extension (iOS, TODO)
 
 App Group (iOS): `group.com.nexushealthlabs.waterreminder`
 
+## Android (implemented)
+
+- `WaterWidgetProvider.kt` — `HomeWidgetProvider` subclass
+- `res/layout/water_widget.xml` — minimal premium layout
+- Registered in `AndroidManifest.xml`
+- After `flutter run`, long-press home screen → Widgets → **Water**
+
 ## iOS
 
-1. **Apple Developer** → Identifiers → App ID `com.nexushealthlabs.waterreminder` → enable **App Groups** → create `group.com.nexushealthlabs.waterreminder`.
-2. Xcode → **File → New → Target → Widget Extension** (name e.g. `WaterWidget`).
-3. Enable App Group on **Runner** and **Widget Extension** targets.
-4. In the widget SwiftUI view, read `UserDefaults(suiteName: "group.com.nexushealthlabs.waterreminder")` for the keys above.
-5. Add widget to **Lock Screen** (circular / rectangular) and **Home Screen** in Widget Gallery.
-6. Follow `home_widget` iOS setup: URL scheme / `WidgetCenter` reload (see package README).
+Swift sources: `ios/WaterWidget/` (Home + Lock Screen).
 
-## Android
+**Full setup (Ukrainian):** [ios_widget_setup_uk.md](ios_widget_setup_uk.md)
 
-1. Create `WaterWidgetProvider` extending `HomeWidgetProvider` (see `home_widget` Android docs).
-2. Register in `AndroidManifest.xml` with `android:label="Water"`.
-3. Layout: progress ring + `today_ml` / `goal_ml` text.
+Quick: Xcode → Widget Extension target → App Group `group.com.nexushealthlabs.waterreminder` → `kind` = `WaterWidget`.
 
-## Design direction
+## Tap to open app
 
-- Soft gradient background (`#E8F6FC` → white)
-- Large percentage, small “ml left” on lock screen
-- Tap widget → opens app (`home_widget` launch URI)
-
-When native targets exist, run the app once and add water — widget should refresh via `WidgetBridge.sync`.
+Configure URL scheme `waterreminder://` in `Info.plist` (iOS) and intent-filter (Android) when adding quick-add buttons on widgets.
