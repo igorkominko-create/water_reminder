@@ -26,11 +26,11 @@ workflows:
       # Optional: group "water_reminder_ios" with APP_STORE_APPLE_ID (numeric ASC Apple ID).
       # groups:
       #   - water_reminder_ios
+      # Main app bundle id only (string). Codemagic also matches extensions:
+      # com.nexushealthlabs.waterreminder.WaterWidget — upload both profiles in UI.
       ios_signing:
         distribution_type: app_store
-        bundle_identifier:
-          - com.nexushealthlabs.waterreminder
-          - com.nexushealthlabs.waterreminder.WaterWidget
+        bundle_identifier: com.nexushealthlabs.waterreminder
       vars:
         XCODE_WORKSPACE: ios/Runner.xcworkspace
         XCODE_SCHEME: Runner

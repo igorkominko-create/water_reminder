@@ -43,6 +43,8 @@
 | **Distribution certificate** | Upload або **Fetch from Apple** |
 | **Provisioning profiles** | App Store profiles для **обох** bundle id (додаток + extension), з App Group |
 
+У `codemagic.yaml` вказано лише **головний** bundle id (`com.nexushealthlabs.waterreminder`) — це **рядок**, не список. Codemagic автоматично шукає також профілі з `com.nexushealthlabs.waterreminder.*` (віджет).
+
 Або в yaml вже є `ios_signing` — Codemagic підтягне профілі після Fetch, якщо API key підключений.
 
 ### Environment variables (опційно)
