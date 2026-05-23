@@ -1,4 +1,5 @@
 import Foundation
+import WidgetKit
 
 /// Keys must match `lib/data/widget/widget_data_keys.dart` (home_widget → UserDefaults).
 enum HydrationWidgetData {
