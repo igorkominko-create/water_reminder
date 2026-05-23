@@ -6,10 +6,46 @@ import '../../../../core/i18n/app_strings.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/glass_surface.dart';
 
-class QuickAddSection extends StatelessWidget {
+class QuickAddSection extends StatefulWidget {
   const QuickAddSection({super.key, required this.onAdd});
 
   final ValueChanged<int> onAdd;
+
+  @override
+  State<QuickAddSection> createState() => _QuickAddSectionState();
+}
+
+class _QuickAddSectionState extends State<QuickAddSection> {
+  final _customController = TextEditingController();
+
+  @override
+  void dispose() {
+    _customController.dispose();
+    super.dispose();
+  }
+
+  void _submitCustom() {
+    final parsed = int.tryParse(_customController.text.trim());
+    if (parsed == null ||
+        parsed < AppConstants.minAddMl ||
+        parsed > AppConstants.maxAddMl) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            AppStrings.invalidAmountMessage(
+              AppConstants.minAddMl,
+              AppConstants.maxAddMl,
+            ),
+          ),
+        ),
+      );
+      return;
+    }
+    HapticFeedback.lightImpact();
+    widget.onAdd(parsed);
+    _customController.clear();
+    FocusScope.of(context).unfocus();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +58,9 @@ class QuickAddSection extends StatelessWidget {
           Text(
             AppStrings.addWater,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: colors.deep,
-                ),
+              fontWeight: FontWeight.w600,
+              color: colors.deep,
+            ),
           ),
           const SizedBox(height: 16),
           Row(
@@ -36,11 +72,44 @@ class QuickAddSection extends StatelessWidget {
                     ml: AppConstants.quickAddMl[i],
                     onTap: () {
                       HapticFeedback.lightImpact();
-                      onAdd(AppConstants.quickAddMl[i]);
+                      widget.onAdd(AppConstants.quickAddMl[i]);
                     },
                   ),
                 ),
               ],
+            ],
+          ),
+          const SizedBox(height: 14),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _customController,
+                  keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.done,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  onSubmitted: (_) => _submitCustom(),
+                  decoration: InputDecoration(
+                    hintText: AppStrings.customAmountHint,
+                    filled: true,
+                    fillColor: colors.foam,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              FilledButton(
+                onPressed: _submitCustom,
+                child: const Text(AppStrings.addCustom),
+              ),
             ],
           ),
         ],
@@ -80,15 +149,15 @@ class _AddTile extends StatelessWidget {
               Text(
                 AppStrings.mlAmount(ml),
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: colors.deep,
-                    ),
+                  fontWeight: FontWeight.w700,
+                  color: colors.deep,
+                ),
               ),
               Text(
                 AppStrings.mlLabel,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: colors.deep.withValues(alpha: 0.5),
-                    ),
+                  color: colors.deep.withValues(alpha: 0.5),
+                ),
               ),
             ],
           ),

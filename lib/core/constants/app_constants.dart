@@ -7,6 +7,9 @@ abstract final class AppConstants {
 
   static const List<int> quickAddMl = [150, 250, 350, 500];
 
+  static const int minAddMl = 1;
+  static const int maxAddMl = 10000;
+
   static const String prefGoalMl = 'goal_ml';
   static const String prefTodayDate = 'today_date';
   static const String prefTodayMl = 'today_ml';

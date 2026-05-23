@@ -10,6 +10,10 @@ abstract final class AppStrings {
   static const String goalReachedHeadline = 'You\'re fully hydrated';
 
   static const String addWater = 'Add water';
+  static const String customAmountHint = 'Custom amount (ml)';
+  static const String addCustom = 'Add';
+  static String invalidAmountMessage(int min, int max) =>
+      'Enter an amount between $min and $max ml';
   static String mlAmount(int ml) => '$ml';
   static String mlWithUnit(int ml) => '$ml ml';
   static const String mlLabel = 'ml';
