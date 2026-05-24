@@ -4,7 +4,7 @@
 
 | Workflow | Тригер | Результат |
 |----------|--------|-----------|
-| **Water Reminder iOS (IPA + widgets)** | push → `main` | `.ipa` → App Store Connect (завантаження) |
+| **Water Reminder iOS (IPA + widgets)** | push → `main` | `.ipa` + auto-upload в App Store Connect (`APP_STORE_APPLE_ID=6772597155`) |
 | **Water Reminder Android (AAB + APK)** | push → `main` | `.aab` (Play Store) + `.apk` (тест/роздача) |
 
 Перед кожною збіркою виконується **`flutter gen-l10n`** (ARB → Dart).
@@ -47,27 +47,22 @@
 
 Або в yaml вже є `ios_signing` — Codemagic підтягне профілі після Fetch, якщо API key підключений.
 
-### Environment variables (опційно)
+### Environment variables
 
-Група **`water_reminder_ios`** (Application або Team):
+У `codemagic.yaml` (workflow **ios-release**):
 
-| Змінна | Secret | Приклад |
-|--------|--------|---------|
-| `APP_STORE_APPLE_ID` | ✅ | Числовий Apple ID з App Store Connect → App Information |
+| Змінна | Значення |
+|--------|----------|
+| `APP_STORE_APPLE_ID` | `6772597155` (Hydro — Water Reminder) |
+| `APP_STORE_CONNECT_ALTOOL_ADDITIONAL_ARGUMENTS` | `--apple-id "6772597155"` |
 
-Якщо задано — build number = останній у ASC + 1. Інакше — з `pubspec.yaml` (`1.0.0+1`).
-
-Розкоментуй у `codemagic.yaml`:
-
-```yaml
-groups:
-  - water_reminder_ios
-```
+Build number = останній у ASC + 1.
 
 ### Публікація
 
-- IPA завантажується в App Store Connect (`submit_to_testflight: false` — без авто beta review).
-- TestFlight / реліз — вручну в App Store Connect.
+- Після збірки Codemagic **автоматично завантажує IPA** в App Store Connect (`publishing` → integration **SnapBite**).
+- `submit_to_testflight: false` — білд з’являється в **TestFlight → Builds**; beta review увімкни вручну в ASC.
+- Обробка Apple: **5–30 хв** після успішного Publishing.
 
 #### Якщо «Publishing failed / Failed to publish … to App Store Connect»
 

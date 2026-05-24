@@ -23,20 +23,17 @@ workflows:
       # Team settings → Integrations → App Store Connect API key (name must match).
       app_store_connect: SnapBite
     environment:
-      # Optional group "water_reminder_ios" (Application env vars, all Secret):
-      #   APP_STORE_APPLE_ID = numeric Apple ID from ASC → App Information
-      #   APP_STORE_CONNECT_ALTOOL_ADDITIONAL_ARGUMENTS = --apple-id "1234567890"
-      # (same number as APP_STORE_APPLE_ID; fixes altool error 19 for new apps)
-      # groups:
-      #   - water_reminder_ios
+      # Hydro — Water Reminder (ASC → App Information → Apple ID)
+      vars:
+        APP_STORE_APPLE_ID: "6772597155"
+        APP_STORE_CONNECT_ALTOOL_ADDITIONAL_ARGUMENTS: '--apple-id "6772597155"'
+        XCODE_WORKSPACE: ios/Runner.xcworkspace
+        XCODE_SCHEME: Runner
       # Main app bundle id only (string). Codemagic also matches extensions:
       # com.nexushealthlabs.waterreminder.WaterWidget — upload both profiles in UI.
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.nexushealthlabs.waterreminder
-      vars:
-        XCODE_WORKSPACE: ios/Runner.xcworkspace
-        XCODE_SCHEME: Runner
       flutter: stable
       xcode: latest
       cocoapods: default
@@ -75,13 +72,11 @@ workflows:
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
-    # Auto-upload to App Store Connect often fails for new apps (auth / Apple ID).
-    # Download IPA from Artifacts and upload with Transporter (see docs/codemagic_cicd_uk.md).
-    # When ASC + API key are ready, uncomment publishing and add group water_reminder_ios.
-    # publishing:
-    #   app_store_connect:
-    #     auth: integration
-    #     submit_to_testflight: false
+    publishing:
+      app_store_connect:
+        auth: integration
+        # Uploads IPA to ASC (TestFlight → Builds). Beta review — enable manually in ASC.
+        submit_to_testflight: false
 
   android-release:
     name: Water Reminder Android (AAB + APK)
