@@ -12,7 +12,8 @@ class HydrationSnapshot {
   /// `yyyy-MM-dd` for the device local date.
   final String todayKey;
 
-  double get progress => goalMl <= 0 ? 0 : (todayMl / goalMl).clamp(0.0, 1.0);
+  double get progress =>
+      goalMl <= 0 ? 0 : (todayMl / goalMl).clamp(0.0, 1.0);
 
   int get remainingMl => (goalMl - todayMl).clamp(0, goalMl);
 
@@ -20,7 +21,11 @@ class HydrationSnapshot {
 
   bool get goalReached => todayMl >= goalMl;
 
-  HydrationSnapshot copyWith({int? goalMl, int? todayMl, String? todayKey}) {
+  HydrationSnapshot copyWith({
+    int? goalMl,
+    int? todayMl,
+    String? todayKey,
+  }) {
     return HydrationSnapshot(
       goalMl: goalMl ?? this.goalMl,
       todayMl: todayMl ?? this.todayMl,

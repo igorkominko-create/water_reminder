@@ -24,7 +24,11 @@ class GradientScaffold extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [colors.foam, colors.surface, Colors.white],
+          colors: [
+            colors.foam,
+            colors.surface,
+            Colors.white,
+          ],
           stops: const [0.0, 0.45, 1.0],
         ),
       ),

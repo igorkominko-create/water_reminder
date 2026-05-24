@@ -110,9 +110,9 @@ class _WidgetHint extends StatelessWidget {
             child: Text(
               l10n.widgetHint,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: colors.deep.withValues(alpha: 0.75),
-                height: 1.35,
-              ),
+                    color: colors.deep.withValues(alpha: 0.75),
+                    height: 1.35,
+                  ),
             ),
           ),
         ],

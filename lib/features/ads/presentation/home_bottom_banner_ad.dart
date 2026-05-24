@@ -58,7 +58,8 @@ class _AdMobInitializerState extends ConsumerState<AdMobInitializer> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    // ATT already resolved in main(); initialize() runs ATT again (idempotent) then MobileAds.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(admobServiceProvider).initialize();
     });
   }

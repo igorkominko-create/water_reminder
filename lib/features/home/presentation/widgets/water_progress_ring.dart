@@ -50,24 +50,24 @@ class WaterProgressRing extends StatelessWidget {
                   Text(
                     '$percent%',
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: colors.deep,
-                      letterSpacing: -1.5,
-                    ),
+                          fontWeight: FontWeight.w700,
+                          color: colors.deep,
+                          letterSpacing: -1.5,
+                        ),
                   ),
                   const SizedBox(height: 6),
                   Text(
                     l10n.mlWithUnit(todayMl),
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: colors.mid,
-                      fontWeight: FontWeight.w600,
-                    ),
+                          color: colors.mid,
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
                   Text(
                     l10n.ofDailyGoal(goalMl),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: colors.deep.withValues(alpha: 0.55),
-                    ),
+                          color: colors.deep.withValues(alpha: 0.55),
+                        ),
                   ),
                 ],
               ),

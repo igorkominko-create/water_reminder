@@ -7,12 +7,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'ad_unit_ids.dart';
 
-/// Centralizes AdMob init, banner, and interstitial lifecycle.
+/// Centralizes ATT (iOS), AdMob init, banner, and interstitial lifecycle.
+///
+/// Apple requires [resolveAppTrackingTransparency] before [MobileAds.instance.initialize].
 class AdMobService extends ChangeNotifier {
   AdMobService({this.adsEnabled = true, SharedPreferences? preferences})
     : _preferences = preferences;
 
   static const _goalInterstitialDayKey = 'admob_goal_interstitial_day';
+
+  /// Last resolved ATT status on iOS (null until first resolve attempt).
+  static TrackingStatus? lastTrackingStatus;
 
   final bool adsEnabled;
   SharedPreferences? _preferences;
@@ -35,13 +40,37 @@ class AdMobService extends ChangeNotifier {
 
   double get bannerHeight => AdSize.banner.height.toDouble();
 
+  /// iOS: check ATT status, show system prompt if needed, then return.
+  /// Android/other: no-op. Safe to call multiple times (idempotent).
+  static Future<TrackingStatus> resolveAppTrackingTransparency() async {
+    if (kIsWeb || !Platform.isIOS) {
+      lastTrackingStatus = TrackingStatus.notSupported;
+      return TrackingStatus.notSupported;
+    }
+
+    try {
+      var status = await AppTrackingTransparency.trackingAuthorizationStatus;
+      if (status == TrackingStatus.notDetermined) {
+        status = await AppTrackingTransparency.requestTrackingAuthorization();
+      }
+      lastTrackingStatus = status;
+      if (kDebugMode) {
+        debugPrint('ATT status: $status');
+      }
+      return status;
+    } catch (e, st) {
+      debugPrint('ATT request failed: $e\n$st');
+      lastTrackingStatus = TrackingStatus.denied;
+      return TrackingStatus.denied;
+    }
+  }
+
+  /// ATT (iOS) → [MobileAds.instance.initialize] → preload ads.
   Future<void> initialize() async {
     if (!adsEnabled || _initialized) return;
 
+    await resolveAppTrackingTransparency();
     await MobileAds.instance.initialize();
-    if (Platform.isIOS) {
-      await _requestTrackingAuthorization();
-    }
     _initialized = true;
     loadBanner();
     loadInterstitial();
@@ -159,17 +188,6 @@ class AdMobService extends ChangeNotifier {
     _pendingGoalDayKey = null;
     _bindInterstitialCallbacks(ad, goalDayToMark: dayKey);
     await ad.show();
-  }
-
-  Future<void> _requestTrackingAuthorization() async {
-    try {
-      final status = await AppTrackingTransparency.trackingAuthorizationStatus;
-      if (status == TrackingStatus.notDetermined) {
-        await AppTrackingTransparency.requestTrackingAuthorization();
-      }
-    } catch (e) {
-      debugPrint('ATT request skipped: $e');
-    }
   }
 
   @override
