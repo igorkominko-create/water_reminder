@@ -24,5 +24,11 @@
   "reset": "Скинути",
   "resetToday": "Скинути сьогодні",
   "errorMessage": "Помилка: {error}",
-  "trackingUsageDescription": "Це дозволить показувати релевантнішу рекламу та підтримувати безкоштовний додаток."
+  "trackingUsageDescription": "Це дозволить показувати релевантнішу рекламу та підтримувати безкоштовний додаток.",
+  "snapbitePromoTitle": "Спробуйте SnapBite",
+  "snapbitePromoSubtitle": "Ваш AI-помічник для харчування. Скануйте страви за секунди!",
+  "goalSuccessPromoTitle": "Чудова робота!",
+  "goalSuccessPromoMessage": "Денну норму виконано! 💧 Хочете покращити результати? Спробуйте AI-сканер їжі — SnapBite!",
+  "goalSuccessPromoDownload": "Завантажити безкоштовно",
+  "goalSuccessPromoLater": "Пізніше"
 }

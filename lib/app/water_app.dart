@@ -19,8 +19,9 @@ class WaterApp extends StatelessWidget {
       locale: locale,
       supportedLocales: AppLocale.supportedLocales,
       localizationsDelegates: AppLocale.delegates,
-      localeResolutionCallback:
-          locale != null ? null : AppLocale.localeResolutionCallback,
+      localeResolutionCallback: locale != null
+          ? null
+          : AppLocale.localeResolutionCallback,
       builder: (context, child) {
         AppLocale.applyIntlLocale(Localizations.localeOf(context));
         return child ?? const SizedBox.shrink();

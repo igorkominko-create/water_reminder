@@ -68,5 +68,11 @@
   "trackingUsageDescription": "This allows us to show ads that are more relevant to you and support the free app.",
   "@trackingUsageDescription": {
     "description": "iOS App Tracking Transparency prompt (also in InfoPlist.strings)"
-  }
+  },
+  "snapbitePromoTitle": "Try SnapBite",
+  "snapbitePromoSubtitle": "Your AI-powered food tracking companion. Scan meals in seconds!",
+  "goalSuccessPromoTitle": "Great job!",
+  "goalSuccessPromoMessage": "Daily goal achieved! 💧 Want to boost your fitness results? Try our AI Food Scanner – SnapBite!",
+  "goalSuccessPromoDownload": "Download Free",
+  "goalSuccessPromoLater": "Maybe later"
 }

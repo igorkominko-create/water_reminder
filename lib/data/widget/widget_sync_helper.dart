@@ -42,8 +42,7 @@ abstract final class WidgetSyncHelper {
     await HomeWidget.updateWidget(
       name: AppConstants.androidWidgetName,
       iOSName: AppConstants.iosWidgetName,
-      qualifiedAndroidName:
-          'com.ihorkominko.waterreminder.WaterWidgetProvider',
+      qualifiedAndroidName: 'com.ihorkominko.waterreminder.WaterWidgetProvider',
     );
   }
 }

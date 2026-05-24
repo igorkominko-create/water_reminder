@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../constants/app_constants.dart';
 import 'ad_unit_ids.dart';
 
 /// Centralizes ATT (iOS), AdMob init, banner, and interstitial lifecycle.
@@ -14,7 +15,7 @@ class AdMobService extends ChangeNotifier {
   AdMobService({this.adsEnabled = true, SharedPreferences? preferences})
     : _preferences = preferences;
 
-  static const _goalInterstitialDayKey = 'admob_goal_interstitial_day';
+  static const _goalCelebrationDayKey = AppConstants.prefGoalCelebrationDay;
 
   /// Last resolved ATT status on iOS (null until first resolve attempt).
   static TrackingStatus? lastTrackingStatus;
@@ -40,7 +41,10 @@ class AdMobService extends ChangeNotifier {
 
   double get bannerHeight => AdSize.banner.height.toDouble();
 
-  /// iOS: check ATT status, show system prompt if needed, then return.
+  /// iOS: resolve ATT before any AdMob SDK call.
+  ///
+  /// Waits for the system dialog when status is [TrackingStatus.notDetermined],
+  /// then returns the user's choice (authorized, denied, or restricted).
   /// Android/other: no-op. Safe to call multiple times (idempotent).
   static Future<TrackingStatus> resolveAppTrackingTransparency() async {
     if (kIsWeb || !Platform.isIOS) {
@@ -51,11 +55,12 @@ class AdMobService extends ChangeNotifier {
     try {
       var status = await AppTrackingTransparency.trackingAuthorizationStatus;
       if (status == TrackingStatus.notDetermined) {
+        // Blocks until the user taps Allow or Ask App Not to Track.
         status = await AppTrackingTransparency.requestTrackingAuthorization();
       }
       lastTrackingStatus = status;
       if (kDebugMode) {
-        debugPrint('ATT status: $status');
+        debugPrint('ATT resolved: $status');
       }
       return status;
     } catch (e, st) {
@@ -147,12 +152,12 @@ class AdMobService extends ChangeNotifier {
 
   Future<bool> _goalInterstitialAlreadyShown(String todayKey) async {
     final prefs = _preferences ??= await SharedPreferences.getInstance();
-    return prefs.getString(_goalInterstitialDayKey) == todayKey;
+    return prefs.getString(_goalCelebrationDayKey) == todayKey;
   }
 
   Future<void> _markGoalInterstitialShown(String todayKey) async {
     final prefs = _preferences ??= await SharedPreferences.getInstance();
-    await prefs.setString(_goalInterstitialDayKey, todayKey);
+    await prefs.setString(_goalCelebrationDayKey, todayKey);
   }
 
   void _bindInterstitialCallbacks(InterstitialAd ad, {String? goalDayToMark}) {

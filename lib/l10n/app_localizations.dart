@@ -247,6 +247,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This allows us to show ads that are more relevant to you and support the free app.'**
   String get trackingUsageDescription;
+
+  /// No description provided for @snapbitePromoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Try SnapBite'**
+  String get snapbitePromoTitle;
+
+  /// No description provided for @snapbitePromoSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your AI-powered food tracking companion. Scan meals in seconds!'**
+  String get snapbitePromoSubtitle;
+
+  /// No description provided for @goalSuccessPromoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Great job!'**
+  String get goalSuccessPromoTitle;
+
+  /// No description provided for @goalSuccessPromoMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily goal achieved! 💧 Want to boost your fitness results? Try our AI Food Scanner – SnapBite!'**
+  String get goalSuccessPromoMessage;
+
+  /// No description provided for @goalSuccessPromoDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Download Free'**
+  String get goalSuccessPromoDownload;
+
+  /// No description provided for @goalSuccessPromoLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Maybe later'**
+  String get goalSuccessPromoLater;
 }
 
 class _AppLocalizationsDelegate

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/di/providers.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../promo/presentation/snapbite_promo_card.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -73,6 +74,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 },
                 child: Text(l10n.saveGoal),
               ),
+              const SizedBox(height: 28),
+              const SnapBitePromoCard(),
               const SizedBox(height: 32),
               OutlinedButton(
                 onPressed: () async {

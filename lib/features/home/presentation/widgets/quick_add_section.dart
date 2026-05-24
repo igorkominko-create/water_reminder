@@ -60,9 +60,9 @@ class _QuickAddSectionState extends State<QuickAddSection> {
           Text(
             l10n.addWater,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: colors.deep,
-                ),
+              fontWeight: FontWeight.w600,
+              color: colors.deep,
+            ),
           ),
           const SizedBox(height: 16),
           Row(
@@ -157,15 +157,15 @@ class _AddTile extends StatelessWidget {
               Text(
                 '$ml',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: colors.deep,
-                    ),
+                  fontWeight: FontWeight.w700,
+                  color: colors.deep,
+                ),
               ),
               Text(
                 mlLabel,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: colors.deep.withValues(alpha: 0.5),
-                    ),
+                  color: colors.deep.withValues(alpha: 0.5),
+                ),
               ),
             ],
           ),

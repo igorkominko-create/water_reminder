@@ -95,4 +95,24 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get trackingUsageDescription =>
       'This allows us to show ads that are more relevant to you and support the free app.';
+
+  @override
+  String get snapbitePromoTitle => 'Try SnapBite';
+
+  @override
+  String get snapbitePromoSubtitle =>
+      'Your AI-powered food tracking companion. Scan meals in seconds!';
+
+  @override
+  String get goalSuccessPromoTitle => 'Great job!';
+
+  @override
+  String get goalSuccessPromoMessage =>
+      'Daily goal achieved! 💧 Want to boost your fitness results? Try our AI Food Scanner – SnapBite!';
+
+  @override
+  String get goalSuccessPromoDownload => 'Download Free';
+
+  @override
+  String get goalSuccessPromoLater => 'Maybe later';
 }

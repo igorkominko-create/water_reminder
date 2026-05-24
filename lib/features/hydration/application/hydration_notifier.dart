@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/di/providers.dart';
 import '../../../domain/entities/hydration_snapshot.dart';
+import '../../promo/application/goal_celebration_service.dart';
 
 /// Orchestrates hydration use cases and keeps widgets in sync.
 class HydrationNotifier extends AsyncNotifier<HydrationSnapshot> {
@@ -26,7 +27,15 @@ class HydrationNotifier extends AsyncNotifier<HydrationSnapshot> {
     final crossedGoal =
         previous != null && !previous.goalReached && next.goalReached;
     if (crossedGoal) {
-      await ref.read(admobServiceProvider).onGoalReached(next.todayKey);
+      final kind = await ref
+          .read(goalCelebrationServiceProvider)
+          .onDailyGoalReached(
+            admob: ref.read(admobServiceProvider),
+            todayKey: next.todayKey,
+          );
+      if (kind == GoalCelebrationKind.snapbitePromo) {
+        ref.read(pendingSnapbiteGoalPromoProvider.notifier).state = true;
+      }
     }
   }
 

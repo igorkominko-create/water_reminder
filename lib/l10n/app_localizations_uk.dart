@@ -95,4 +95,24 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get trackingUsageDescription =>
       'Це дозволить показувати релевантнішу рекламу та підтримувати безкоштовний додаток.';
+
+  @override
+  String get snapbitePromoTitle => 'Спробуйте SnapBite';
+
+  @override
+  String get snapbitePromoSubtitle =>
+      'Ваш AI-помічник для харчування. Скануйте страви за секунди!';
+
+  @override
+  String get goalSuccessPromoTitle => 'Чудова робота!';
+
+  @override
+  String get goalSuccessPromoMessage =>
+      'Денну норму виконано! 💧 Хочете покращити результати? Спробуйте AI-сканер їжі — SnapBite!';
+
+  @override
+  String get goalSuccessPromoDownload => 'Завантажити безкоштовно';
+
+  @override
+  String get goalSuccessPromoLater => 'Пізніше';
 }
