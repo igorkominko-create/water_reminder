@@ -17,6 +17,12 @@ Minimal Flutter hydration tracker with a focus on **iOS Lock Screen / Home Scree
 
 Register new App ID / Play app with these IDs before store release.
 
+## Privacy Policy (GitHub Pages)
+
+Hosted from `docs/index.html`. Setup: [docs/GITHUB_PAGES.md](docs/GITHUB_PAGES.md).
+
+Public URL (after enabling Pages): `https://igorkominko-create.github.io/water_reminder/`
+
 ## GitHub
 
 Remote (after you create the empty repo on GitHub):
