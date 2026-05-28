@@ -50,24 +50,24 @@ class WaterProgressRing extends StatelessWidget {
                   Text(
                     '$percent%',
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: colors.deep,
-                      letterSpacing: -1.5,
-                    ),
+                          fontWeight: FontWeight.w700,
+                          color: colors.deep,
+                          letterSpacing: -1.5,
+                        ),
                   ),
                   const SizedBox(height: 6),
                   Text(
                     l10n.mlWithUnit(todayMl),
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: colors.mid,
-                      fontWeight: FontWeight.w600,
-                    ),
+                          color: colors.mid,
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
                   Text(
                     l10n.ofDailyGoal(goalMl),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: colors.deep.withValues(alpha: 0.55),
-                    ),
+                          color: colors.deep.withValues(alpha: 0.55),
+                        ),
                   ),
                 ],
               ),
@@ -97,12 +97,7 @@ class _RingPainter extends CustomPainter {
     final center = Offset(size.width / 2, size.height / 2);
     final radius = size.width / 2 - 14;
     const stroke = 16.0;
-
-    final track = Paint()
-      ..color = trackColor
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = stroke
-      ..strokeCap = StrokeCap.round;
+    final isFull = progress >= 0.9999;
 
     final fill = Paint()
       ..shader = SweepGradient(
@@ -112,9 +107,16 @@ class _RingPainter extends CustomPainter {
       ).createShader(Rect.fromCircle(center: center, radius: radius))
       ..style = PaintingStyle.stroke
       ..strokeWidth = stroke
-      ..strokeCap = StrokeCap.round;
+      ..strokeCap = isFull ? StrokeCap.butt : StrokeCap.round;
 
-    canvas.drawCircle(center, radius, track);
+    if (!isFull) {
+      final track = Paint()
+        ..color = trackColor
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = stroke
+        ..strokeCap = StrokeCap.round;
+      canvas.drawCircle(center, radius, track);
+    }
 
     final sweep = 2 * math.pi * progress;
     if (sweep > 0) {

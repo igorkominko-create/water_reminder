@@ -13,24 +13,18 @@ import '../../features/promo/application/goal_celebration_service.dart';
 
 // ——— Infrastructure ———
 
-final sharedPreferencesProvider = FutureProvider<SharedPreferences>((
-  ref,
-) async {
+final sharedPreferencesProvider = FutureProvider<SharedPreferences>((ref) async {
   return SharedPreferences.getInstance();
 });
 
-final hydrationPrefsStoreProvider = FutureProvider<HydrationPrefsStore>((
-  ref,
-) async {
+final hydrationPrefsStoreProvider = FutureProvider<HydrationPrefsStore>((ref) async {
   final prefs = await ref.watch(sharedPreferencesProvider.future);
   return HydrationPrefsStore(prefs);
 });
 
 // ——— Domain contracts (injectable for tests) ———
 
-final hydrationRepositoryProvider = FutureProvider<HydrationRepository>((
-  ref,
-) async {
+final hydrationRepositoryProvider = FutureProvider<HydrationRepository>((ref) async {
   final store = await ref.watch(hydrationPrefsStoreProvider.future);
   return HydrationRepositoryImpl(store);
 });
@@ -56,5 +50,5 @@ final pendingSnapbiteGoalPromoProvider = StateProvider<bool>((ref) => false);
 
 final hydrationNotifierProvider =
     AsyncNotifierProvider<HydrationNotifier, HydrationSnapshot>(
-      HydrationNotifier.new,
-    );
+  HydrationNotifier.new,
+);

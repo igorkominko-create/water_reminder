@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/ads/admob_service.dart';
 import '../../../core/di/providers.dart';
 import '../../../core/theme/app_theme.dart';
 
@@ -44,26 +43,3 @@ class _HomeBottomBannerAdState extends ConsumerState<HomeBottomBannerAd> {
   }
 }
 
-/// Ensures [AdMobService.initialize] runs once when the home screen mounts.
-class AdMobInitializer extends ConsumerStatefulWidget {
-  const AdMobInitializer({super.key, required this.child});
-
-  final Widget child;
-
-  @override
-  ConsumerState<AdMobInitializer> createState() => _AdMobInitializerState();
-}
-
-class _AdMobInitializerState extends ConsumerState<AdMobInitializer> {
-  @override
-  void initState() {
-    super.initState();
-    // ATT already resolved in main(); initialize() runs ATT again (idempotent) then MobileAds.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(admobServiceProvider).initialize();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) => widget.child;
-}

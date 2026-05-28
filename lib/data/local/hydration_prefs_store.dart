@@ -9,7 +9,8 @@ class HydrationPrefsStore {
 
   final SharedPreferences _prefs;
 
-  static String todayKey() => DateFormat('yyyy-MM-dd').format(DateTime.now());
+  static String todayKey() =>
+      DateFormat('yyyy-MM-dd').format(DateTime.now());
 
   int readGoalMl() =>
       _prefs.getInt(AppConstants.prefGoalMl) ?? AppConstants.defaultGoalMl;

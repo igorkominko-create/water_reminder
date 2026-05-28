@@ -70,11 +70,12 @@ class AdMobService extends ChangeNotifier {
     }
   }
 
-  /// ATT (iOS) → [MobileAds.instance.initialize] → preload ads.
+  /// [MobileAds.instance.initialize] → preload ads.
+  ///
+  /// Call only after [resolveAppTrackingTransparency] on the home screen (iOS).
   Future<void> initialize() async {
     if (!adsEnabled || _initialized) return;
 
-    await resolveAppTrackingTransparency();
     await MobileAds.instance.initialize();
     _initialized = true;
     loadBanner();

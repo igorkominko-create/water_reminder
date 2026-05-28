@@ -3,16 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app/water_app.dart';
-import 'core/ads/admob_service.dart';
 import 'core/di/providers.dart';
 import 'core/i18n/app_locale.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AppLocale.configure();
-
-  // iOS: ATT system dialog must complete before any AdMob SDK initialization.
-  await AdMobService.resolveAppTrackingTransparency();
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

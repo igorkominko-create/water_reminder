@@ -15,8 +15,7 @@ class GoalCelebrationListener extends ConsumerStatefulWidget {
       _GoalCelebrationListenerState();
 }
 
-class _GoalCelebrationListenerState
-    extends ConsumerState<GoalCelebrationListener> {
+class _GoalCelebrationListenerState extends ConsumerState<GoalCelebrationListener> {
   @override
   Widget build(BuildContext context) {
     ref.listen<bool>(pendingSnapbiteGoalPromoProvider, (previous, next) {
