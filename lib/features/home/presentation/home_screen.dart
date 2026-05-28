@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,15 +24,32 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  Timer? _attStartupTimer;
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _requestAttAndInitAds());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      if (!ref.read(admobServiceProvider).adsEnabled) return;
+
+      // Give iOS a brief moment to transition to the resumed state before ATT.
+      _attStartupTimer = Timer(const Duration(milliseconds: 800), () {
+        _attStartupTimer = null;
+        if (!mounted) return;
+        unawaited(_requestAttAndInitAds());
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _attStartupTimer?.cancel();
+    super.dispose();
   }
 
   Future<void> _requestAttAndInitAds() async {
-    // Give iOS a brief moment to transition to the resumed state before ATT.
-    await Future<void>.delayed(const Duration(milliseconds: 800));
+    if (!ref.read(admobServiceProvider).adsEnabled) return;
     if (!mounted) return;
 
     try {
