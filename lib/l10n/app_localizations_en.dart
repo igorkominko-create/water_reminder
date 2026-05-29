@@ -93,26 +93,26 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get trackingUsageDescription =>
-      'This allows us to show ads that are more relevant to you and support the free app.';
-
-  @override
-  String get snapbitePromoTitle => 'Try SnapBite';
+  String get snapbitePromoTitle => 'Try SnapBite — AI Calorie Scanner';
 
   @override
   String get snapbitePromoSubtitle =>
-      'Your AI-powered food tracking companion. Scan meals in seconds!';
+      'Track your nutrition automatically with AI';
 
   @override
   String get goalSuccessPromoTitle => 'Great job!';
 
   @override
   String get goalSuccessPromoMessage =>
-      'Daily goal achieved! 💧 Want to boost your fitness results? Try our AI Food Scanner – SnapBite!';
+      'Hydration is on track! Want to track meals just as easily? Try SnapBite — our smart AI calorie scanner from photos.';
 
   @override
-  String get goalSuccessPromoDownload => 'Download Free';
+  String get goalSuccessPromoDownload => 'Try for free';
 
   @override
   String get goalSuccessPromoLater => 'Maybe later';
+
+  @override
+  String get snapbiteBannerMessage =>
+      'Track calories via photo with SnapBite AI 📸. Try Free ->';
 }

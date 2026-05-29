@@ -35,7 +35,7 @@ class SnapBitePromoCard extends StatelessWidget {
                 child: const Padding(
                   padding: EdgeInsets.all(10),
                   child: Icon(
-                    Icons.restaurant_menu_rounded,
+                    Icons.camera_alt_outlined,
                     color: Colors.white,
                     size: 22,
                   ),

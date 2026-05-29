@@ -14,12 +14,8 @@ abstract final class AppConstants {
   static const String prefTodayDate = 'today_date';
   static const String prefTodayMl = 'today_ml';
 
-  /// Last calendar day a goal celebration (ad or SnapBite promo) was shown.
+  /// Last calendar day a goal celebration (SnapBite promo) was shown.
   static const String prefGoalCelebrationDay = 'goal_celebration_day';
-
-  /// When true, the next goal celebration prefers AdMob interstitial; toggles each time.
-  static const String prefGoalCelebrationPreferInterstitial =
-      'goal_celebration_prefer_interstitial';
 
   static const String widgetGroupId = 'group.com.nexushealthlabs.waterreminder';
   static const String widgetDeepLinkScheme = 'waterreminder';

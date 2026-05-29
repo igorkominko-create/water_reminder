@@ -27,14 +27,23 @@ class HydrationNotifier extends AsyncNotifier<HydrationSnapshot> {
     final crossedGoal =
         previous != null && !previous.goalReached && next.goalReached;
     if (crossedGoal) {
-      final kind = await ref
-          .read(goalCelebrationServiceProvider)
-          .onDailyGoalReached(
-            admob: ref.read(admobServiceProvider),
-            todayKey: next.todayKey,
-          );
-      if (kind == GoalCelebrationKind.snapbitePromo) {
+      final celebration = ref.read(goalCelebrationServiceProvider);
+      final shownThisSession =
+          ref.read(snapbiteGoalPromoShownThisSessionProvider);
+
+      // First 100% in this app session → SnapBite dialog (once per launch).
+      if (!shownThisSession) {
+        ref.read(snapbiteGoalPromoShownThisSessionProvider.notifier).state =
+            true;
         ref.read(pendingSnapbiteGoalPromoProvider.notifier).state = true;
+        await celebration.markCelebratedToday(next.todayKey);
+      } else {
+        final kind = await celebration.onDailyGoalReached(
+          todayKey: next.todayKey,
+        );
+        if (kind == GoalCelebrationKind.snapbitePromo) {
+          ref.read(pendingSnapbiteGoalPromoProvider.notifier).state = true;
+        }
       }
     }
   }

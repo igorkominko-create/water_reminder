@@ -1,70 +1,23 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/ads/admob_service.dart';
 import '../../../core/di/providers.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/glass_surface.dart';
 import '../../../core/widgets/gradient_scaffold.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../ads/presentation/home_bottom_banner_ad.dart';
 import '../../promo/presentation/goal_celebration_listener.dart';
+import '../../promo/presentation/snapbite_banner_widget.dart';
 import '../../settings/presentation/settings_screen.dart';
 import 'widgets/hydration_summary_header.dart';
 import 'widgets/quick_add_section.dart';
 import 'widgets/water_progress_ring.dart';
 
-class HomeScreen extends ConsumerStatefulWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  ConsumerState<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends ConsumerState<HomeScreen> {
-  Timer? _attStartupTimer;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      if (!ref.read(admobServiceProvider).adsEnabled) return;
-
-      // Give iOS a brief moment to transition to the resumed state before ATT.
-      _attStartupTimer = Timer(const Duration(milliseconds: 800), () {
-        _attStartupTimer = null;
-        if (!mounted) return;
-        unawaited(_requestAttAndInitAds());
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _attStartupTimer?.cancel();
-    super.dispose();
-  }
-
-  Future<void> _requestAttAndInitAds() async {
-    if (!ref.read(admobServiceProvider).adsEnabled) return;
-    if (!mounted) return;
-
-    try {
-      final status = await AdMobService.resolveAppTrackingTransparency();
-      debugPrint('ATT Status: $status');
-    } catch (e) {
-      debugPrint('Error requesting ATT: $e');
-    }
-
-    if (!mounted) return;
-    await ref.read(admobServiceProvider).initialize();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final async = ref.watch(hydrationNotifierProvider);
     final topPadding = MediaQuery.paddingOf(context).top;
@@ -84,7 +37,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           ],
         ),
-        bottomNavigationBar: const HomeBottomBannerAd(),
+        bottomNavigationBar: const SnapBiteBannerWidget(),
         body: async.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (e, _) => Center(child: Text(l10n.errorMessage('$e'))),
@@ -96,7 +49,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   24,
                   topPadding + kToolbarHeight + 8,
                   24,
-                  24,
+                  16,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,

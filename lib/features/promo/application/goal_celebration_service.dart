@@ -1,21 +1,17 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../core/ads/admob_service.dart';
 import '../../../core/constants/app_constants.dart';
 
 /// What to show when the user completes the daily hydration goal.
 enum GoalCelebrationKind {
-  /// Nothing (already celebrated today or ads/promo disabled).
+  /// Already celebrated today.
   none,
 
-  /// Full-screen AdMob interstitial (marks day when dismissed).
-  interstitial,
-
-  /// In-app SnapBite promo dialog (day marked before dialog).
+  /// In-app SnapBite promo dialog.
   snapbitePromo,
 }
 
-/// Alternates goal celebrations between AdMob interstitial and SnapBite promo.
+/// Tracks daily goal celebrations (SnapBite cross-promo).
 class GoalCelebrationService {
   GoalCelebrationService({SharedPreferences? preferences})
     : _preferences = preferences;
@@ -25,26 +21,18 @@ class GoalCelebrationService {
   Future<SharedPreferences> get _prefs async =>
       _preferences ??= await SharedPreferences.getInstance();
 
+  /// Marks today so [onDailyGoalReached] will not run again until the next day.
+  Future<void> markCelebratedToday(String todayKey) async {
+    final prefs = await _prefs;
+    await prefs.setString(AppConstants.prefGoalCelebrationDay, todayKey);
+  }
+
   Future<GoalCelebrationKind> onDailyGoalReached({
-    required AdMobService admob,
     required String todayKey,
   }) async {
     final prefs = await _prefs;
     if (prefs.getString(AppConstants.prefGoalCelebrationDay) == todayKey) {
       return GoalCelebrationKind.none;
-    }
-
-    final preferInterstitial =
-        prefs.getBool(AppConstants.prefGoalCelebrationPreferInterstitial) ??
-        true;
-    await prefs.setBool(
-      AppConstants.prefGoalCelebrationPreferInterstitial,
-      !preferInterstitial,
-    );
-
-    if (preferInterstitial && admob.adsEnabled) {
-      await admob.onGoalReached(todayKey);
-      return GoalCelebrationKind.interstitial;
     }
 
     await prefs.setString(AppConstants.prefGoalCelebrationDay, todayKey);

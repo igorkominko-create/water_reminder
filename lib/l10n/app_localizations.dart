@@ -242,22 +242,16 @@ abstract class AppLocalizations {
   /// **'Error: {error}'**
   String errorMessage(String error);
 
-  /// iOS App Tracking Transparency prompt (also in InfoPlist.strings)
-  ///
-  /// In en, this message translates to:
-  /// **'This allows us to show ads that are more relevant to you and support the free app.'**
-  String get trackingUsageDescription;
-
   /// No description provided for @snapbitePromoTitle.
   ///
   /// In en, this message translates to:
-  /// **'Try SnapBite'**
+  /// **'Try SnapBite — AI Calorie Scanner'**
   String get snapbitePromoTitle;
 
   /// No description provided for @snapbitePromoSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Your AI-powered food tracking companion. Scan meals in seconds!'**
+  /// **'Track your nutrition automatically with AI'**
   String get snapbitePromoSubtitle;
 
   /// No description provided for @goalSuccessPromoTitle.
@@ -269,13 +263,13 @@ abstract class AppLocalizations {
   /// No description provided for @goalSuccessPromoMessage.
   ///
   /// In en, this message translates to:
-  /// **'Daily goal achieved! 💧 Want to boost your fitness results? Try our AI Food Scanner – SnapBite!'**
+  /// **'Hydration is on track! Want to track meals just as easily? Try SnapBite — our smart AI calorie scanner from photos.'**
   String get goalSuccessPromoMessage;
 
   /// No description provided for @goalSuccessPromoDownload.
   ///
   /// In en, this message translates to:
-  /// **'Download Free'**
+  /// **'Try for free'**
   String get goalSuccessPromoDownload;
 
   /// No description provided for @goalSuccessPromoLater.
@@ -283,6 +277,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Maybe later'**
   String get goalSuccessPromoLater;
+
+  /// No description provided for @snapbiteBannerMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Track calories via photo with SnapBite AI 📸. Try Free ->'**
+  String get snapbiteBannerMessage;
 }
 
 class _AppLocalizationsDelegate

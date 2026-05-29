@@ -93,26 +93,26 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get trackingUsageDescription =>
-      'Це дозволить показувати релевантнішу рекламу та підтримувати безкоштовний додаток.';
-
-  @override
-  String get snapbitePromoTitle => 'Спробуйте SnapBite';
+  String get snapbitePromoTitle => 'Спробуй SnapBite — ШІ-сканер калорій';
 
   @override
   String get snapbitePromoSubtitle =>
-      'Ваш AI-помічник для харчування. Скануйте страви за секунди!';
+      'Відстежуй харчування автоматично за допомогою ШІ';
 
   @override
   String get goalSuccessPromoTitle => 'Чудова робота!';
 
   @override
   String get goalSuccessPromoMessage =>
-      'Денну норму виконано! 💧 Хочете покращити результати? Спробуйте AI-сканер їжі — SnapBite!';
+      'Гідратація під контролем. Бажаєш так само легко контролювати харчування? Спробуй SnapBite — наш розумний ШІ-сканер калорій по фото.';
 
   @override
-  String get goalSuccessPromoDownload => 'Завантажити безкоштовно';
+  String get goalSuccessPromoDownload => 'Спробувати безкоштовно';
 
   @override
   String get goalSuccessPromoLater => 'Пізніше';
+
+  @override
+  String get snapbiteBannerMessage =>
+      'Рахуй калорії за фото з SnapBite AI 📸. Спробувати безкоштовно ->';
 }

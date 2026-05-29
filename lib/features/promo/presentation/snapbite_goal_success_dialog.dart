@@ -29,7 +29,11 @@ Future<void> showSnapBiteGoalSuccessDialog(BuildContext context) {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16),
-                child: Icon(Icons.water_drop_rounded, size: 40, color: colors.mid),
+                child: Icon(
+                  Icons.camera_alt_outlined,
+                  size: 40,
+                  color: colors.mid,
+                ),
               ),
             ),
             const SizedBox(height: 16),

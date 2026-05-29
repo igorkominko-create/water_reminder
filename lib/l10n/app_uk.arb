@@ -24,11 +24,11 @@
   "reset": "Скинути",
   "resetToday": "Скинути сьогодні",
   "errorMessage": "Помилка: {error}",
-  "trackingUsageDescription": "Це дозволить показувати релевантнішу рекламу та підтримувати безкоштовний додаток.",
-  "snapbitePromoTitle": "Спробуйте SnapBite",
-  "snapbitePromoSubtitle": "Ваш AI-помічник для харчування. Скануйте страви за секунди!",
+  "snapbitePromoTitle": "Спробуй SnapBite — ШІ-сканер калорій",
+  "snapbitePromoSubtitle": "Відстежуй харчування автоматично за допомогою ШІ",
   "goalSuccessPromoTitle": "Чудова робота!",
-  "goalSuccessPromoMessage": "Денну норму виконано! 💧 Хочете покращити результати? Спробуйте AI-сканер їжі — SnapBite!",
-  "goalSuccessPromoDownload": "Завантажити безкоштовно",
-  "goalSuccessPromoLater": "Пізніше"
+  "goalSuccessPromoMessage": "Гідратація під контролем. Бажаєш так само легко контролювати харчування? Спробуй SnapBite — наш розумний ШІ-сканер калорій по фото.",
+  "goalSuccessPromoDownload": "Спробувати безкоштовно",
+  "goalSuccessPromoLater": "Пізніше",
+  "snapbiteBannerMessage": "Рахуй калорії за фото з SnapBite AI 📸. Спробувати безкоштовно ->"
 }
