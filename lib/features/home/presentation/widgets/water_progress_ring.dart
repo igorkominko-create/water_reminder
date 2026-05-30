@@ -1,11 +1,14 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/units/volume_format.dart';
+import '../../../../core/units/volume_unit_notifier.dart';
 import '../../../../l10n/app_localizations.dart';
 
-class WaterProgressRing extends StatelessWidget {
+class WaterProgressRing extends ConsumerWidget {
   const WaterProgressRing({
     super.key,
     required this.progress,
@@ -20,9 +23,11 @@ class WaterProgressRing extends StatelessWidget {
   final int percent;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final colors = context.waterColors;
+    final isMetric = ref.watch(isMetricProvider);
+    final format = VolumeFormat(l10n: l10n, isMetric: isMetric);
 
     return TweenAnimationBuilder<double>(
       tween: Tween(end: progress.clamp(0.0, 1.0)),
@@ -57,14 +62,14 @@ class WaterProgressRing extends StatelessWidget {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    l10n.mlWithUnit(todayMl),
+                    format.volume(todayMl),
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: colors.mid,
                           fontWeight: FontWeight.w600,
                         ),
                   ),
                   Text(
-                    l10n.ofDailyGoal(goalMl),
+                    format.ofDailyGoal(goalMl),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: colors.deep.withValues(alpha: 0.55),
                         ),

@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/units/volume_format.dart';
+import '../../../../core/units/volume_unit_notifier.dart';
+import '../../../../core/units/volume_units.dart';
 import '../../../../core/widgets/glass_surface.dart';
 import '../../../../l10n/app_localizations.dart';
 
-class QuickAddSection extends StatefulWidget {
+class QuickAddSection extends ConsumerStatefulWidget {
   const QuickAddSection({super.key, required this.onAdd});
 
   final ValueChanged<int> onAdd;
 
   @override
-  State<QuickAddSection> createState() => _QuickAddSectionState();
+  ConsumerState<QuickAddSection> createState() => _QuickAddSectionState();
 }
 
-class _QuickAddSectionState extends State<QuickAddSection> {
+class _QuickAddSectionState extends ConsumerState<QuickAddSection> {
   final _customController = TextEditingController();
 
   @override
@@ -24,26 +28,32 @@ class _QuickAddSectionState extends State<QuickAddSection> {
     super.dispose();
   }
 
-  void _submitCustom() {
+  void _submitCustom(bool isMetric) {
     final l10n = AppLocalizations.of(context);
-    final parsed = int.tryParse(_customController.text.trim());
-    if (parsed == null ||
-        parsed < AppConstants.minAddMl ||
-        parsed > AppConstants.maxAddMl) {
+    final format = VolumeFormat(l10n: l10n, isMetric: isMetric);
+    final ml = format.parseInputToMl(_customController.text);
+    if (ml == null ||
+        ml < AppConstants.minAddMl ||
+        ml > AppConstants.maxAddMl) {
+      final minDisplay = isMetric
+          ? AppConstants.minAddMl
+          : VolumeUnits.mlToFlOz(AppConstants.minAddMl);
+      final maxDisplay = isMetric
+          ? AppConstants.maxAddMl
+          : VolumeUnits.mlToFlOz(AppConstants.maxAddMl);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            l10n.invalidAmountMessage(
-              AppConstants.minAddMl,
-              AppConstants.maxAddMl,
-            ),
+            isMetric
+                ? l10n.invalidAmountMessage(minDisplay, maxDisplay)
+                : l10n.invalidAmountMessageFlOz(minDisplay, maxDisplay),
           ),
         ),
       );
       return;
     }
     HapticFeedback.lightImpact();
-    widget.onAdd(parsed);
+    widget.onAdd(ml);
     _customController.clear();
     FocusScope.of(context).unfocus();
   }
@@ -52,6 +62,10 @@ class _QuickAddSectionState extends State<QuickAddSection> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final colors = context.waterColors;
+    final isMetric = ref.watch(isMetricProvider);
+    final format = VolumeFormat(l10n: l10n, isMetric: isMetric);
+    final displayValues = VolumeUnits.quickAddDisplayValues(isMetric: isMetric);
+    final tapMlValues = VolumeUnits.quickAddMlForTap(isMetric: isMetric);
 
     return GlassSurface(
       child: Column(
@@ -67,15 +81,16 @@ class _QuickAddSectionState extends State<QuickAddSection> {
           const SizedBox(height: 16),
           Row(
             children: [
-              for (var i = 0; i < AppConstants.quickAddMl.length; i++) ...[
+              for (var i = 0; i < displayValues.length; i++) ...[
                 if (i > 0) const SizedBox(width: 10),
                 Expanded(
                   child: _AddTile(
-                    ml: AppConstants.quickAddMl[i],
-                    mlLabel: l10n.mlLabel,
+                    displayValue: displayValues[i],
+                    unitLabel: format.unitLabel(),
+                    mlForIcon: tapMlValues[i],
                     onTap: () {
                       HapticFeedback.lightImpact();
-                      widget.onAdd(AppConstants.quickAddMl[i]);
+                      widget.onAdd(tapMlValues[i]);
                     },
                   ),
                 ),
@@ -92,9 +107,11 @@ class _QuickAddSectionState extends State<QuickAddSection> {
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.done,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  onSubmitted: (_) => _submitCustom(),
+                  onSubmitted: (_) => _submitCustom(isMetric),
                   decoration: InputDecoration(
-                    hintText: l10n.customAmountHint,
+                    hintText: isMetric
+                        ? l10n.customAmountHint
+                        : l10n.customAmountHintFlOz,
                     filled: true,
                     fillColor: colors.foam,
                     border: OutlineInputBorder(
@@ -110,7 +127,7 @@ class _QuickAddSectionState extends State<QuickAddSection> {
               ),
               const SizedBox(width: 10),
               FilledButton(
-                onPressed: _submitCustom,
+                onPressed: () => _submitCustom(isMetric),
                 child: Text(l10n.addCustom),
               ),
             ],
@@ -123,22 +140,24 @@ class _QuickAddSectionState extends State<QuickAddSection> {
 
 class _AddTile extends StatelessWidget {
   const _AddTile({
-    required this.ml,
-    required this.mlLabel,
+    required this.displayValue,
+    required this.unitLabel,
+    required this.mlForIcon,
     required this.onTap,
   });
 
-  final int ml;
-  final String mlLabel;
+  final int displayValue;
+  final String unitLabel;
+  final int mlForIcon;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.waterColors;
-    final icon = switch (ml) {
-      <= 150 => Icons.local_cafe_outlined,
-      <= 250 => Icons.water_drop_outlined,
-      <= 350 => Icons.wine_bar_outlined,
+    final icon = switch (mlForIcon) {
+      <= 180 => Icons.local_cafe_outlined,
+      <= 280 => Icons.water_drop_outlined,
+      <= 400 => Icons.wine_bar_outlined,
       _ => Icons.sports_bar_outlined,
     };
 
@@ -155,14 +174,14 @@ class _AddTile extends StatelessWidget {
               Icon(icon, color: colors.mid, size: 22),
               const SizedBox(height: 6),
               Text(
-                '$ml',
+                '$displayValue',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w700,
                       color: colors.deep,
                     ),
               ),
               Text(
-                mlLabel,
+                unitLabel,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: colors.deep.withValues(alpha: 0.5),
                     ),

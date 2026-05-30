@@ -51,6 +51,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mlLabel => 'ml';
 
   @override
+  String get flOzLabel => 'fl oz';
+
+  @override
+  String flOzWithUnit(int oz) {
+    return '$oz fl oz';
+  }
+
+  @override
+  String flOzToGo(int oz) {
+    return '$oz fl oz to go';
+  }
+
+  @override
+  String ofDailyGoalFlOz(int oz) {
+    return 'of $oz fl oz';
+  }
+
+  @override
+  String get unitsTitle => 'Units';
+
+  @override
+  String get customAmountHintFlOz => 'Custom amount (fl oz)';
+
+  @override
+  String invalidAmountMessageFlOz(Object max, Object min) {
+    return 'Enter an amount between $min and $max fl oz';
+  }
+
+  @override
+  String get dailyGoalTitleFlOz => 'Daily goal (fl oz)';
+
+  @override
+  String get invalidGoalMessageFlOz => 'Enter a goal between 9 and 338 fl oz';
+
+  @override
   String ofDailyGoal(int goalMl) {
     return 'of $goalMl ml';
   }

@@ -5,10 +5,11 @@ abstract final class AppConstants {
   /// Default daily goal (milliliters).
   static const int defaultGoalMl = 2000;
 
-  static const List<int> quickAddMl = [150, 250, 350, 500];
-
   static const int minAddMl = 1;
   static const int maxAddMl = 10000;
+
+  /// `true` = milliliters, `false` = fluid ounces (display only).
+  static const String prefIsMetric = 'is_metric';
 
   static const String prefGoalMl = 'goal_ml';
   static const String prefTodayDate = 'today_date';

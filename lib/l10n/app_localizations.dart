@@ -170,6 +170,60 @@ abstract class AppLocalizations {
   /// **'ml'**
   String get mlLabel;
 
+  /// No description provided for @flOzLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'fl oz'**
+  String get flOzLabel;
+
+  /// No description provided for @flOzWithUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'{oz} fl oz'**
+  String flOzWithUnit(int oz);
+
+  /// No description provided for @flOzToGo.
+  ///
+  /// In en, this message translates to:
+  /// **'{oz} fl oz to go'**
+  String flOzToGo(int oz);
+
+  /// No description provided for @ofDailyGoalFlOz.
+  ///
+  /// In en, this message translates to:
+  /// **'of {oz} fl oz'**
+  String ofDailyGoalFlOz(int oz);
+
+  /// No description provided for @unitsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Units'**
+  String get unitsTitle;
+
+  /// No description provided for @customAmountHintFlOz.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom amount (fl oz)'**
+  String get customAmountHintFlOz;
+
+  /// No description provided for @invalidAmountMessageFlOz.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an amount between {min} and {max} fl oz'**
+  String invalidAmountMessageFlOz(Object max, Object min);
+
+  /// No description provided for @dailyGoalTitleFlOz.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily goal (fl oz)'**
+  String get dailyGoalTitleFlOz;
+
+  /// No description provided for @invalidGoalMessageFlOz.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a goal between 9 and 338 fl oz'**
+  String get invalidGoalMessageFlOz;
+
   /// No description provided for @ofDailyGoal.
   ///
   /// In en, this message translates to:

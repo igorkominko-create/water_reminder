@@ -39,6 +39,36 @@
     }
   },
   "mlLabel": "ml",
+  "flOzLabel": "fl oz",
+  "flOzWithUnit": "{oz} fl oz",
+  "@flOzWithUnit": {
+    "placeholders": {
+      "oz": {
+        "type": "int"
+      }
+    }
+  },
+  "flOzToGo": "{oz} fl oz to go",
+  "@flOzToGo": {
+    "placeholders": {
+      "oz": {
+        "type": "int"
+      }
+    }
+  },
+  "ofDailyGoalFlOz": "of {oz} fl oz",
+  "@ofDailyGoalFlOz": {
+    "placeholders": {
+      "oz": {
+        "type": "int"
+      }
+    }
+  },
+  "unitsTitle": "Units",
+  "customAmountHintFlOz": "Custom amount (fl oz)",
+  "invalidAmountMessageFlOz": "Enter an amount between {min} and {max} fl oz",
+  "dailyGoalTitleFlOz": "Daily goal (fl oz)",
+  "invalidGoalMessageFlOz": "Enter a goal between 9 and 338 fl oz",
   "ofDailyGoal": "of {goalMl} ml",
   "@ofDailyGoal": {
     "placeholders": {

@@ -51,6 +51,41 @@ class AppLocalizationsUk extends AppLocalizations {
   String get mlLabel => 'мл';
 
   @override
+  String get flOzLabel => 'fl oz';
+
+  @override
+  String flOzWithUnit(int oz) {
+    return '$oz fl oz';
+  }
+
+  @override
+  String flOzToGo(int oz) {
+    return 'Залишилось $oz fl oz';
+  }
+
+  @override
+  String ofDailyGoalFlOz(int oz) {
+    return 'з $oz fl oz';
+  }
+
+  @override
+  String get unitsTitle => 'Одиниці вимірювання';
+
+  @override
+  String get customAmountHintFlOz => 'Своя кількість (fl oz)';
+
+  @override
+  String invalidAmountMessageFlOz(Object max, Object min) {
+    return 'Введіть кількість від $min до $max fl oz';
+  }
+
+  @override
+  String get dailyGoalTitleFlOz => 'Денна норма (fl oz)';
+
+  @override
+  String get invalidGoalMessageFlOz => 'Введіть норму від 9 до 338 fl oz';
+
+  @override
   String ofDailyGoal(int goalMl) {
     return 'з $goalMl мл';
   }
