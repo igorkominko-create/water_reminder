@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Privacy Policy — [App Name]</title>
+  <title>Privacy Policy — Water Reminder</title>
   <style>
     :root {
       --text: #0b3d5c;
@@ -77,126 +77,142 @@
   <div class="wrap">
     <header>
       <h1>Privacy Policy</h1>
-      <p class="meta"><strong>[App Name]</strong> · Last updated: [Effective Date]</p>
+      <p class="meta"><strong>Water Reminder</strong> · Last updated: May 29, 2026 · <a href="privacy_uk.html">Українською</a></p>
     </header>
 
     <section>
       <h2>1. Introduction</h2>
       <p>
-        This Privacy Policy describes how <strong>[Developer Name]</strong> (“we”, “us”) collects,
-        uses, and shares information when you use the mobile application <strong>[App Name]</strong>
-        (the “App”) on iOS and Android.
+        This Privacy Policy describes how <strong>Nexus Health Labs</strong> (“we”, “us”) handles
+        information when you use the mobile application <strong>Water Reminder</strong> (the “App”)
+        on iOS and Android.
       </p>
       <p>
-        By using the App, you agree to this Privacy Policy. If you do not agree, please do not use the App.
+        Water Reminder is a minimal hydration tracker. We do not require an account, we do not sell
+        your data, and we do not use third-party advertising SDKs.
       </p>
     </section>
 
     <section>
-      <h2>2. Information we collect</h2>
-      <p>Depending on how you use the App, we may process the following categories of data:</p>
+      <h2>2. Information we process</h2>
+      <p>Depending on how you use the App, the following data may be stored on your device:</p>
       <ul>
         <li>
-          <strong>Hydration and app settings</strong> — daily water intake you log, daily goal,
-          and related preferences. This data is stored locally on your device (and in the App Group
-          shared container used for home screen widgets on iOS).
+          <strong>Hydration data</strong> — water you log each day, your daily goal, and today’s
+          progress. Values are stored internally in milliliters (ml), even if you choose to display
+          fluid ounces (fl oz) in the App.
         </li>
         <li>
-          <strong>Device and app diagnostics</strong> — basic technical data needed to keep the App
-          stable (for example, crash information if provided by the operating system).
+          <strong>App preferences</strong> — unit system (ml or fl oz) and similar settings saved
+          locally via the device’s app storage.
         </li>
         <li>
-          <strong>Cross-app links</strong> — if you tap a SnapBite promotion in the App, we open the
-          SnapBite listing in the App Store or Google Play. We do not receive your hydration data when
-          you do this.
+          <strong>Widget data (iOS)</strong> — summary numbers shared with the home screen widget
+          through an Apple App Group container (<code>group.com.nexushealthlabs.waterreminder</code>).
         </li>
       </ul>
       <p>
-        We do <strong>not</strong> require you to create an account to use the core features of the App,
-        and we do not knowingly collect payment information through the App.
+        We do <strong>not</strong> collect payment information, health records from Apple Health or
+        Health Connect, location, contacts, photos, microphone audio, or advertising identifiers.
       </p>
     </section>
 
     <section>
       <h2>3. How we use information</h2>
       <ul>
-        <li>To provide hydration tracking, goals, reminders, and home screen widgets.</li>
-        <li>To sync widget display with data you enter in the App.</li>
-        <li>To show optional SnapBite cross-promotion (our AI nutrition app) when you choose to open it.</li>
-        <li>To comply with legal obligations and protect our rights.</li>
+        <li>To show your hydration progress, daily goal, and quick-add controls.</li>
+        <li>To update home screen widgets when you log water in the App.</li>
+        <li>To remember your unit preference (ml or fl oz).</li>
+        <li>To show optional SnapBite cross-promotion when you choose to open it (see Section 4).</li>
       </ul>
     </section>
 
     <section>
-      <h2>4. SnapBite cross-promotion</h2>
+      <h2>4. SnapBite cross-promotion (not third-party ads)</h2>
       <p>
-        The App may show a banner or dialog promoting <strong>SnapBite</strong>, our separate AI calorie
-        scanner app. Tapping it opens the store listing in your device’s app marketplace (App Store or
-        Google Play). We do not embed third-party advertising SDKs in this App.
+        The App may show an in-app banner or dialog promoting <strong>SnapBite</strong>, our separate
+        AI calorie scanner app. This is first-party cross-promotion only — we do <strong>not</strong>
+        embed Google AdMob or other advertising SDKs, and we do <strong>not</strong> show the iOS
+        App Tracking Transparency (ATT) prompt.
+      </p>
+      <p>
+        If you tap a SnapBite promotion, the App opens the SnapBite listing in the App Store or
+        Google Play using your device’s browser or store app. We do not send your hydration data to
+        SnapBite as part of that tap.
       </p>
     </section>
 
     <section>
-      <h2>5. Data storage and retention</h2>
-      <p>
-        Hydration data and settings are stored primarily <strong>on your device</strong>. We do not
-        operate a user account server for the App at this time.
-      </p>
-      <p>
-        Data remains on your device until you delete the App, reset today’s intake in the App, or clear
-        app data through your device settings. Widget data on iOS is stored in the App Group container
-        shared between the App and its widget extension.
-      </p>
-    </section>
-
-    <section>
-      <h2>6. Sharing of information</h2>
-      <p>We may share information only in these situations:</p>
+      <h2>5. Permissions and device access</h2>
+      <p>The App requests minimal platform access:</p>
       <ul>
         <li>
-          <strong>App stores</strong> — when you open a SnapBite store link, Apple or Google handle that
-          request under their own policies.
+          <strong>Android — Internet</strong> — used only to open external store links (SnapBite).
+          Hydration tracking works offline.
+        </li>
+        <li>
+          <strong>iOS — App Groups</strong> — allows the main App and its widget extension to share
+          hydration summary data on your device. No special privacy usage string is shown for this.
+        </li>
+      </ul>
+      <p>
+        The App does <strong>not</strong> request camera, microphone, location, notifications,
+        photo library, motion/activity, or health platform read/write permissions.
+      </p>
+    </section>
+
+    <section>
+      <h2>6. Data storage and retention</h2>
+      <p>
+        Hydration data and settings are stored <strong>on your device</strong>. We do not operate a
+        cloud account or backend server for Water Reminder at this time.
+      </p>
+      <p>
+        Data remains until you delete the App, reset today’s intake in Settings, or clear app storage
+        in your device settings. Uninstalling the App removes locally stored data.
+      </p>
+    </section>
+
+    <section>
+      <h2>7. Sharing of information</h2>
+      <p>We may share information only in these limited situations:</p>
+      <ul>
+        <li>
+          <strong>App stores</strong> — when you open a SnapBite link, Apple or Google process that
+          request under their own privacy policies.
         </li>
         <li>
           <strong>Legal requirements</strong> — if required by law, court order, or to protect safety
           and rights.
         </li>
         <li>
-          <strong>Business transfers</strong> — in connection with a merger, acquisition, or sale of
-          assets, with notice where required by law.
+          <strong>Business transfers</strong> — in connection with a merger or acquisition, with notice
+          where required by law.
         </li>
       </ul>
       <p>We do <strong>not sell</strong> your personal information.</p>
     </section>
 
     <section>
-      <h2>7. Children’s privacy</h2>
+      <h2>8. Children’s privacy</h2>
       <p>
-        The App is not directed to children under 13 (or the minimum age required in your country).
-        We do not knowingly collect personal information from children. If you believe a child has
-        provided us information, contact us and we will take appropriate steps to delete it.
+        The App is not directed to children under 13 (or the minimum age in your country). We do not
+        knowingly collect personal information from children. Contact us if you believe a child has
+        provided information and we will take steps to delete it.
       </p>
     </section>
 
     <section>
-      <h2>8. Your rights and choices</h2>
-      <p>Depending on your location, you may have rights to access, correct, or delete personal data we hold about you.</p>
+      <h2>9. Your rights and choices</h2>
       <ul>
-        <li>You can change your daily goal and reset intake in the App settings.</li>
-        <li>You can uninstall the App to remove locally stored data.</li>
-        <li>You can ignore or dismiss SnapBite promotions without sharing hydration data.</li>
+        <li>Change your daily goal and unit system (ml / fl oz) in Settings.</li>
+        <li>Reset today’s intake in Settings.</li>
+        <li>Uninstall the App to remove locally stored data.</li>
+        <li>Ignore or dismiss SnapBite promotions — no hydration data is shared by doing so.</li>
       </ul>
       <p>
-        If you are in the EEA, UK, or similar regions, you may also have rights under GDPR / UK GDPR.
-        Contact us using the details below to exercise your rights.
-      </p>
-    </section>
-
-    <section>
-      <h2>9. International users</h2>
-      <p>
-        If you use the App from outside the country where [Developer Name] is based, your information
-        may be processed in countries where our service providers (including Google) operate.
+        If you are in the EEA, UK, or similar regions, you may have additional rights under GDPR /
+        UK GDPR. Contact us below to exercise them.
       </p>
     </section>
 
@@ -204,21 +220,21 @@
       <h2>10. Changes to this policy</h2>
       <p>
         We may update this Privacy Policy from time to time. We will post the updated version at this
-        URL and change the “Last updated” date above. Continued use of the App after changes means you
-        accept the updated policy.
+        URL and change the “Last updated” date. Continued use of the App after changes means you accept
+        the updated policy.
       </p>
     </section>
 
     <section>
       <h2>11. Contact us</h2>
       <p>
-        If you have questions about this Privacy Policy or the App, contact us at:
-        <a href="mailto:[Contact Email]">[Contact Email]</a>
+        Questions about this Privacy Policy or Water Reminder:
+        <a href="mailto:snapbite.support@gmail.com">snapbite.support@gmail.com</a>
       </p>
     </section>
 
     <footer>
-      © [Effective Date Year] [Developer Name] · [App Name]
+      © 2026 Nexus Health Labs · Water Reminder
     </footer>
   </div>
 </body>

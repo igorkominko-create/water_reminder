@@ -11,17 +11,12 @@ Privacy policy file: **`docs/index.html`**
 
    `https://igorkominko-create.github.io/water_reminder/`
 
-Use this URL in **App Store Connect** and **Google Play Console** (Privacy Policy).
+Use this URL in **App Store Connect** and **Google Play Console** (Privacy Policy):
 
-## Placeholders to replace in `docs/index.html`
+- English: `https://igorkominko-create.github.io/water_reminder/`
+- Ukrainian: `https://igorkominko-create.github.io/water_reminder/privacy_uk.html`
 
-| Placeholder | Example |
-|-------------|---------|
-| `[App Name]` | Water Reminder |
-| `[Developer Name]` | Nexus Health Labs |
-| `[Contact Email]` | your@email.com |
-| `[Effective Date]` | March 23, 2026 |
-| `[Effective Date Year]` | 2026 |
+Policy content reflects the current app: **local hydration data only**, **ml/fl oz units**, **SnapBite cross-promo** (no AdMob, no ATT).
 
 ## App Store / Play
 
